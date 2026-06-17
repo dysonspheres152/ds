@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Namungoona High School | Academic MIS Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg,#e0f2fe,#f8fafc);
+            color: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav {
+            background: linear-gradient(135deg,#0f172a,#1e3a8a);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .nav-brand {
+            color: #fde047;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: .2s ease;
+        }
+
+        nav a:hover, nav a.active {
+            color: white;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+            padding: 50px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1440px;
+            margin: auto;
+            padding: 40px 0;
+            flex: 1;
+        }
+
+        .auth-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .auth-card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            border: 1px solid #e2e8f0;
+            border-top: 5px solid #2563eb;
+            transition: transform 0.25s ease;
+        }
+
+        .auth-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .auth-card h3 {
+            color: #0f172a;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #475569;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            color: #0f172a;
+            background-color: #fff;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background: #1d4ed8; }
+        .btn-accent { background: #10b981; }
+        .btn-accent:hover { background: #059669; }
+        .btn-gold { background: #eab308; color: white; }
+        .btn-gold:hover { background: #ca8a04; }
+        .btn-purple { background: #8b5cf6; }
+        .btn-purple:hover { background: #7c3aed; }
+        .btn-danger { background: #ef4444; }
+        .btn-danger:hover { background: #dc2626; }
+
+        .portal-layout {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .sidebar {
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 30px 15px;
+            width: 260px;
+            float: left;
+            min-height: 750px;
+        }
+
+        .sidebar h3 {
+            color: #fde047;
+            margin-bottom: 20px;
+            font-size: 13px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-menu { list-style: none; }
+
+        .sidebar-menu li {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .sidebar-menu li:hover, .sidebar-menu li.active {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 40px;
+            background: white;
+            min-height: 750px;
+        }
+
+        .portal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        .portal-header h2 {
+            color: #0f172a;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg,#e0f2fe,#f8fafc);
+            color: #64748b;
+            border: 1px solid #cbd5e1;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .logout-btn:hover { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
+
+        .view-panel { display: none; }
+        .view-panel.active { display: block; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: #f8fafc;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #2563eb;
+        }
+
+        .stat-box h4 {
+            color: #64748b;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .stat-box p {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-top: 4px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f8fafc;
+            color: #334155;
+            padding: 14px 18px;
+            font-weight: 600;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        table td {
+            padding: 14px 18px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #475569;
+        }
+
+        .lookup-box {
+            background: #f8fafc;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 25px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            display: inline-block;
+        }
+        .badge-blue { background-color: #2563eb; }
+        .badge-green { background-color: #10b981; }
+        .badge-purple { background-color: #8b5cf6; }
+
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 1px solid #334155;
+        }
+
+        footer h3 { color: white; margin-bottom: 5px; font-size: 1.1rem; }
+        footer p { font-size: 13px; }
+
+        /* A4 Unified Print Engine Stylesheet Configuration */
+        .report-card-print {
+            background: white; 
+            padding: 25px; 
+            border: 2px solid #000; 
+            color: #000;
+            width: 100%; 
+            max-width: 720px; 
+            margin: 0 auto; 
+            box-sizing: border-box;
+            page-break-inside: avoid;
+        }
+        .report-header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
+        .report-header h2 { font-size: 22px; font-weight: 800; }
+        .report-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; padding: 12px; border: 1px solid #000; font-size: 12px; margin-bottom: 15px; }
+        .report-meta div { border-bottom: 1px dashed #aaa; padding-bottom: 2px; }
+        .report-card-print table { width: 100%; border: 1px solid #000; font-size: 11px; }
+        .report-card-print table th { background: #000 !important; color: #fff !important; border: 1px solid #000; padding: 6px 8px; }
+        .report-card-print table td { border: 1px solid #000; padding: 6px 8px; color: #000; }
+        .report-comments-block { margin-top: 15px; }
+        .comment-line { margin-bottom: 8px; font-size: 12px; border-bottom: 1px solid #000; padding-bottom: 4px; }
+        .report-signatures { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 15px; border-top: 1px dashed #000; font-size: 11px; }
+        .sig-space { text-align: center; width: 160px; }
+        .sig-line { border-top: 1px solid #000; margin-top: 25px; }
+        .report-summary-box-ui { margin-top: 15px; padding: 12px; background: linear-gradient(135deg,#e0f2fe,#f8fafc); display: flex; justify-content: space-between; align-items: center; border-radius: 8px; }
+
+        @media print {
+            @page { size: a4 portrait; margin: 10mm; }
+            body, .container, .main-content { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; }
+            nav, .hero, .sidebar, .portal-header, footer, .lookup-box, .report-summary-box-ui, .logout-btn { display: none !important; }
+            .main-content { margin-left: 0 !important; }
+            .portal-layout { border: none !important; box-shadow: none !important; display: block !important; }
+            .report-card-print { border: 2px solid #000; padding: 15px; max-width: 100%; width: 100%; height: auto; }
+        }
+        @media(max-width: 992px) { .sidebar { width: 100%; float: none; min-height: auto; } .main-content { margin-left: 0; padding: 20px; } }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-brand">Namungoona High School</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="admissions.html">Admissions</a>
+            <a href="portals.html" class="active">Portals</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Academic MIS Hub Terminal</h1>
+    </section>
+
+    <div class="container">
+        <div id="authContainer" class="auth-wrapper">
+            <div class="auth-card">
+                <h3>Admin Portal</h3>
+                <form onsubmit="handlePortalLogin(event, 'Admin')">
+                    <div class="form-group"><label>Username</label><input type="text" id="adminUser" placeholder="Admin Username" required autocomplete="off"></div>
+                    <div class="form-group"><label>Security Pin</label><input type="password" id="adminPass" placeholder="••••" required autocomplete="off"></div>
+                    <button type="submit" class="btn">Access Console</button>
+                </form>
+            </div>
+            <div class="auth-card" style="border-top-color: #10b981;">
+                <h3>Teacher Desk</h3>
+                <form onsubmit="handlePortalLogin(event, 'Teacher')">
+                    <div class="form-group"><label>Teacher Account ID</label><input type="text" id="teacherUser" placeholder="e.g. teacher_mat" required></div>
+                    <div class="form-group"><label>Password</label><input type="password" id="teacherPass" placeholder="••••" required></div>
+                    <button type="submit" class="btn btn-accent">Login Faculty</button>
+                </form>
+            </div>
+            <div class="auth-card" style="border-top-color: #eab308;">
+                <h3>Student Desk</h3>
+                <form onsubmit="handlePortalLogin(event, 'Student')">
+                    <div class="form-group"><label>Access Token ID</label><input type="text" id="studentUser" placeholder="e.g. stud_mukasa" required></div>
+                    <div class="form-group"><label>Password</label><input type="password" id="studentPass" placeholder="••••" required></div>
+                    <button type="submit" class="btn btn-gold">Sign In Student</button>
+                </form>
+            </div>
+            <div class="auth-card" style="border-top-color: #8b5cf6;">
+                <h3>Parents Portal</h3>
+                <form onsubmit="handlePortalLogin(event, 'Parent')">
+                    <div class="form-group"><label>Ward Student ID</label><input type="text" id="parentUser" placeholder="NHS-2026-001" required></div>
+                    <div class="form-group"><label>Parent Pass-key</label><input type="password" id="parentPass" placeholder="••••" required></div>
+                    <button type="submit" class="btn btn-purple">Access Parent Node</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="portalDashboard" class="portal-layout">
+            <div class="sidebar">
+                <h3 id="userDisplay">Active Node</h3>
+                <ul class="sidebar-menu" id="dynamicNavMenu"></ul>
+            </div>
+
+            <div class="main-content">
+                <div class="portal-header">
+                    <h2 id="currentTabTitle">Console Dashboard</h2>
+                    <button class="logout-btn" onclick="exitPortal()">Secure Logout</button>
+                </div>
+
+                <div id="adminStudentsView" class="view-panel">
+                    <div class="lookup-box">
+                        <h4 style="margin-bottom:12px; color: #2563eb;">📥 Inbound Student Application Queue Buffer</h4>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr><th>Applicant Name</th><th>Parent/Guardian</th><th>Target Class</th><th>Stream</th><th>Action Authorization</th></tr>
+                                </thead>
+                                <tbody id="studentApprovalQueueBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <h4 style="margin-top:25px; color: #2563eb;">📋 Enrolled Registered Database Register</h4>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr><th>Registry ID</th><th>Student Name</th><th>Parent/Guardian</th><th>Class</th><th>Stream</th><th>Management Operation</th></tr>
+                            </thead>
+                            <tbody id="adminEnrolledStudentsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="adminTeachersView" class="view-panel">
+                    <div class="lookup-box">
+                        <h4 style="margin-bottom:12px; color: #10b981;">📥 Inbound Teacher Applications Buffer</h4>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr><th>Candidate Name</th><th>Qualification</th><th>Exp</th><th>Action</th></tr>
+                                </thead>
+                                <tbody id="teacherApprovalQueueBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <h4 style="margin-top:25px; color: #10b981;">👥 Active Appointed Faculty Register</h4>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr><th>ID</th><th>Faculty Instructor Name</th><th>Assigned Subject Scope</th><th>Qualification</th><th>Operation</th></tr>
+                            </thead>
+                            <tbody id="adminTeachersTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="adminCredsView" class="view-panel">
+                    <div class="lookup-box" style="margin-bottom: 35px;">
+                        <h3 style="color:#8b5cf6; margin-bottom: 20px;">🔐 Identity Access Credential Assigner Form</h3>
+                        <form onsubmit="handleAssignCredentials(event)">
+                            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px;">
+                                <div class="form-group">
+                                    <label>Target Account User Group Role</label>
+                                    <select id="credRoleTarget" onchange="populateUserTargetSelect()" required>
+                                        <option value="">-- Choose Target Domain Role --</option>
+                                        <option value="Admin">Admin Node</option>
+                                        <option value="Teacher">Teacher Faculty</option>
+                                        <option value="Student">Student Learner</option>
+                                        <option value="Parent">Parent Overseer</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Select Target Entity Profile Name</label>
+                                    <select id="credUserTarget" required>
+                                        <option value="">-- Choose User Identity --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Assign Username Tag</label>
+                                    <input type="text" id="credAssignedUser" placeholder="Enter System Username" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Assign Access Pass-key</label>
+                                    <input type="password" id="credAssignedPass" placeholder="Enter Access Password" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-purple" style="width: auto; padding:12px 30px; margin-top:10px;">Authorize Identity Access Token</button>
+                        </form>
+                    </div>
+
+                    <h3>Active System Access Tokens Ledger</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr><th>Entity Target Profile</th><th>Role Domain</th><th>Configured User Tag</th><th>Status</th></tr>
+                            </thead>
+                            <tbody id="credentialsAssignmentTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="adminReportsView" class="view-panel">
+                    <h3>Terminal Progress Transcript Desk</h3>
+                    <div class="lookup-box" style="max-width:400px;">
+                        <select id="adminReportSelect" onchange="renderAdminReportCard()"></select>
+                    </div>
+                    <div id="adminPrintArea"></div>
+                </div>
+
+                <div id="adminStatsView" class="view-panel">
+                    <h3>Institutional Metrics Framework</h3>
+                    <div class="stats-grid">
+                        <div class="stat-box"><h4>Total Enrolled Count</h4><p id="statTotal">0</p></div>
+                        <div class="stat-box"><h4>Faculty Register</h4><p id="statTeachers">0</p></div>
+                    </div>
+                </div>
+
+                <div id="teacherWizardView" class="view-panel">
+                    <div class="lookup-box" style="border-left: 6px solid #10b981;">
+                        <h3 style="color:#10b981; margin-bottom:15px;">🔍 Locked Subject Domain Data Engine Wizard</h3>
+                        <p style="margin-bottom:15px; font-size:14px; color:#475569;">Your account is restricted to your assigned focus subject: <strong id="teacherLockedSubjectBadge" style="color:#10b981;">None</strong></p>
+                        <div style="display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap;">
+                            <div class="form-group" style="flex: 1; min-width: 250px; margin-bottom: 0;">
+                                <label>Enter Student ID / Unique Registration Token Key Search Parameter</label>
+                                <input type="text" id="vlookupSearchId" placeholder="e.g. NHS-2026-001" style="background:#fff;">
+                            </div>
+                            <button onclick="executeTeacherVlookup()" class="btn btn-accent" style="width: auto; padding: 12px 30px; height: 42px;">Execute Focus Search</button>
+                        </div>
+                    </div>
+
+                    <div id="vlookupResultsArea" style="display: none;">
+                        <div class="lookup-box" style="background:#fff; border: 2px solid #e2e8f0; border-radius:20px;">
+                            <h4 style="color:#0f172a; border-bottom:2px solid #f1f5f9; padding-bottom:10px; margin-bottom:15px;">📊 Focus Matrix Results Output</h4>
+                            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 25px;">
+                                <div><small style="color:#64748b; font-weight:600;">Student Full Name</small><p id="vlOutName" style="font-size:1.1rem; font-weight:700; color:#0f172a;"></p></div>
+                                <div><small style="color:#64748b; font-weight:600;">Class Level Lookup Value</small><p id="vlOutClass" style="font-size:1.1rem; font-weight:700; color:#2563eb;"></p></div>
+                                <div><small style="color:#64748b; font-weight:600;">Assigned Stream Node</small><p id="vlOutStream" style="font-size:1.1rem; font-weight:700; color:#10b981;"></p></div>
+                            </div>
+                            <h5 style="color:#475569; margin-bottom:10px; font-weight:600;">Authorized Subject Mark Component:</h5>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead><tr><th>Subject Name</th><th>Score Mark</th><th>UNEB Alpha Code Grade</th></tr></thead>
+                                    <tbody id="vlookupGradeTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="studentDashboardView" class="view-panel"><div id="studentSelfPrintArea"></div></div>
+                <div id="parentDashboardView" class="view-panel"><div id="parentWardPrintArea"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <h3>Namungoona High School</h3>
+        <p>© 2026 Namungoona High School | Academic Management Infrastructure Hub</p>
+    </footer>
+
+    <script>
+        const curriculumSubjects = {
+            "O-Level": [
+                "Mathematics", "English Language", "Biology", "Chemistry", "Physics",
+                "Geography", "History", "Christian Religious Education", "Agriculture",
+                "Commerce"
+            ]
+        };
+
+        const standardStreams = ["K", "Q", "N"];
+
+        let students = JSON.parse(localStorage.getItem("mis_students")) || [];
+        let teachers = JSON.parse(localStorage.getItem("mis_teachers")) || [];
+        let credentialsDb = JSON.parse(localStorage.getItem("mis_credentials")) || [];
+        let gradesDb = JSON.parse(localStorage.getItem("mis_grades")) || [];
+        
+        let currentActiveTeacher = null;
+
+        function generateSeedData() {
+            if (credentialsDb.length === 0) {
+                credentialsDb = [
+                    { name: "System Admin Node", role: "Admin", user: "Dyson", pass: "1234", targetId: "ADMIN" }
+                ];
+            }
+
+            if (students.length === 0) {
+                const structuralSeedStudents = [
+                    { id: "NHS-2026-001", student: "Mukasa Jordan", parent: "Mr. Edward Mukasa", email: "jordan@nhs.ac.ug", phone: "0788111222", className: "S.1", stream: "K" },
+                    { id: "NHS-2026-002", student: "Nantongo Sarah", parent: "Mrs. Florence Nantongo", email: "sarah@nhs.ac.ug", phone: "0752333444", className: "S.1", stream: "Q" },
+                    { id: "NHS-2026-003", student: "Okwera Derrick", parent: "Mr. Charles Okwera", email: "derrick@nhs.ac.ug", phone: "0772555666", className: "S.1", stream: "N" },
+                    { id: "NHS-2026-004", student: "Aisha Nabakooza", parent: "Hajji Rashid Nabakooza", email: "aisha@nhs.ac.ug", phone: "0701777888", className: "S.1", stream: "K" },
+                    { id: "NHS-2026-005", student: "Cheptegei Silas", parent: "Mr. Juma Cheptegei", email: "silas@nhs.ac.ug", phone: "0789999000", className: "S.1", stream: "Q" }
+                ];
+
+                students = structuralSeedStudents;
+                localStorage.setItem("mis_students", JSON.stringify(students));
+
+                students.forEach((s, idx) => {
+                    let i = idx + 1;
+                    if (!credentialsDb.some(c => c.targetId === s.id && c.role === "Student")) {
+                        credentialsDb.push({ name: s.student, role: "Student", user: `student${i}`, pass: `stud123`, targetId: s.id });
+                    }
+                    if (!credentialsDb.some(c => c.targetId === s.id && c.role === "Parent")) {
+                        credentialsDb.push({ name: s.parent, role: "Parent", user: s.id, pass: `parent123`, targetId: s.id });
+                    }
+
+                    curriculumSubjects["O-Level"].forEach(sub => {
+                        let mark = Math.floor(50 + Math.random() * 45);
+                        let calculatedGrade = "F9";
+                        if (mark >= 75) calculatedGrade = "D1";
+                        else if (mark >= 70) calculatedGrade = "D2";
+                        else if (mark >= 65) calculatedGrade = "C3";
+                        else if (mark >= 60) calculatedGrade = "C4";
+                        else if (mark >= 55) calculatedGrade = "C5";
+                        else if (mark >= 50) calculatedGrade = "C6";
+                        else if (mark >= 45) calculatedGrade = "P7";
+                        else if (mark >= 40) calculatedGrade = "P8";
+
+                        gradesDb.push({ 
+                            studentId: s.id, 
+                            studentName: s.student, 
+                            className: s.className, 
+                            stream: s.stream, 
+                            subject: sub, 
+                            mark: mark, 
+                            grade: calculatedGrade 
+                        });
+                    });
+                });
+                localStorage.setItem("mis_grades", JSON.stringify(gradesDb));
+                localStorage.setItem("mis_credentials", JSON.stringify(credentialsDb));
+            }
+
+            if (teachers.length === 0) {
+                teachers = [
+                    { id: "T-01", name: "Mr. Ssekandi John", subject: "Mathematics", qualification: "BSc. Education", experience: "8" }
+                ];
+                localStorage.setItem("mis_teachers", JSON.stringify(teachers));
+                if (!credentialsDb.some(c => c.targetId === "T-01")) {
+                    credentialsDb.push({ name: "Mr. Ssekandi John", role: "Teacher", user: "teacher1", pass: "teach123", targetId: "T-01" });
+                    localStorage.setItem("mis_credentials", JSON.stringify(credentialsDb));
+                }
+            }
+        }
+
+        function handlePortalLogin(e, role) {
+            e.preventDefault();
+            let userVal = (role==='Admin')?document.getElementById("adminUser").value:(role==='Teacher')?document.getElementById("teacherUser").value:(role==='Student')?document.getElementById("studentUser").value:document.getElementById("parentUser").value;
+            let passVal = (role==='Admin')?document.getElementById("adminPass").value:(role==='Teacher')?document.getElementById("teacherPass").value:(role==='Student')?document.getElementById("studentPass").value:document.getElementById("parentPass").value;
+
+            let auth = credentialsDb.find(c => c.role === role && c.user === userVal && c.pass === passVal);
+            if(auth) {
+                let identity = (role==='Student'||role==='Parent')?students.find(s=>s.id===auth.targetId):(role==='Teacher')?teachers.find(t=>t.id===auth.targetId):auth;
+                launchPortal(role, identity);
+            } else { alert("Access Denied: Invalid System Credentials."); }
+        }
+
+        function launchPortal(role, identity) {
+            document.getElementById("authContainer").style.display = "none";
+            document.getElementById("portalDashboard").style.display = "block";
+            const menu = document.getElementById("dynamicNavMenu");
+            menu.innerHTML = "";
+
+            if(role === 'Admin') {
+                document.getElementById("userDisplay").innerText = "Admin Desk Terminal";
+                menu.innerHTML = `
+                    <li class="active" onclick="switchTab('adminStudentsView', this)">Student Records</li>
+                    <li onclick="switchTab('adminTeachersView', this)">Faculty Desks</li>
+                    <li onclick="switchTab('adminCredsView', this)">Credential Manager</li>
+                    <li onclick="switchTab('adminReportsView', this)">Transcripts</li>
+                    <li onclick="switchTab('adminStatsView', this)">Metrics</li>`;
+                renderStudentApprovals();
+                renderTeacherApprovals();
+                renderCredentials();
+                populateAdminSelectors();
+                switchTab('adminStudentsView', menu.querySelector('li'));
+            } else if(role === 'Teacher') {
+                currentActiveTeacher = identity;
+                document.getElementById("userDisplay").innerText = identity.name;
+                document.getElementById("teacherLockedSubjectBadge").innerText = identity.subject;
+                menu.innerHTML = `<li class="active" onclick="switchTab('teacherWizardView', this)">Focus VLOOKUP Engine</li>`;
+                switchTab('teacherWizardView', menu.querySelector('li'));
+            } else if(role === 'Student') {
+                document.getElementById("userDisplay").innerText = identity.student;
+                menu.innerHTML = `<li class="active">Student Transcript</li>`;
+                document.getElementById("studentSelfPrintArea").innerHTML = constructReportHTML(identity);
+                switchTab('studentDashboardView');
+            } else if(role === 'Parent') {
+                document.getElementById("userDisplay").innerText = "Parent Oversight Profile";
+                menu.innerHTML = `<li class="active">Ward Ledger Link</li>`;
+                document.getElementById("parentWardPrintArea").innerHTML = constructReportHTML(identity);
+                switchTab('parentDashboardView');
+            }
+        }
+
+        function switchTab(viewId, element) {
+            document.querySelectorAll('.view-panel').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.sidebar-menu li').forEach(l => l.classList.remove('active'));
+            if(document.getElementById(viewId)) {
+                document.getElementById(viewId).classList.add('active');
+            }
+            if(element) element.classList.add('active');
+            document.getElementById("currentTabTitle").innerText = document.getElementById(viewId).querySelector('h3') ? document.getElementById(viewId).querySelector('h3').innerText : "Terminal Console Hub Engine";
+        }
+
+        function renderStudentApprovals() {
+            let pending = JSON.parse(localStorage.getItem("student_applications")) || [];
+            const queue = document.getElementById("studentApprovalQueueBody");
+            queue.innerHTML = "";
+            if(pending.length === 0) {
+                queue.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8;">No pending applications inside queue.</td></tr>`;
+            } else {
+                pending.forEach((app, idx) => {
+                    queue.innerHTML += `<tr>
+                        <td><strong>${app.student}</strong></td>
+                        <td>${app.parent}</td>
+                        <td><span class="badge badge-blue">${app.className}</span></td>
+                        <td>${app.stream}</td>
+                        <td><button class="btn btn-accent" style="padding:6px 12px; font-size:12px; width:auto;" onclick="approveStudent(${idx})">Enroll Profile</button></td>
+                    </tr>`;
+                });
+            }
+
+            const enrolled = document.getElementById("adminEnrolledStudentsBody");
+            enrolled.innerHTML = "";
+            students.forEach((s) => {
+                enrolled.innerHTML += `<tr>
+                    <td><code>${s.id}</code></td>
+                    <td><strong>${s.student}</strong></td>
+                    <td>${s.parent}</td>
+                    <td>${s.className}</td>
+                    <td><span class="badge badge-purple">Stream ${s.stream}</span></td>
+                    <td><button class="btn btn-danger" style="padding:6px 12px; font-size:12px; width:auto;" onclick="purgeStudent('${s.id}')">Purge Data</button></td>
+                </tr>`;
+            });
+            document.getElementById("statTotal").innerText = students.length;
+        }
+
+        function approveStudent(index) {
+            let pending = JSON.parse(localStorage.getItem("student_applications")) || [];
+            let app = pending[index];
+            let nextIdNum = "00" + (students.length + 1);
+            let sId = "NHS-2026-" + nextIdNum.slice(-3);
+            
+            let dynamicAssignedStream = standardStreams[students.length % standardStreams.length];
+            let newStudent = { id: sId, student: app.student, parent: app.parent, email: app.email, phone: app.phone, className: app.className, stream: dynamicAssignedStream };
+            
+            students.push(newStudent);
+            credentialsDb.push({ name: app.student, role: "Student", user: `student${students.length}`, pass: "stud123", targetId: sId });
+            credentialsDb.push({ name: app.parent, role: "Parent", user: sId, pass: "parent123", targetId: sId });
+
+            curriculumSubjects["O-Level"].forEach(sub => {
+                gradesDb.push({ studentId: sId, studentName: app.student, className: app.className, stream: dynamicAssignedStream, subject: sub, mark: 70, grade: "D2" });
+            });
+
+            pending.splice(index, 1);
+            localStorage.setItem("student_applications", JSON.stringify(pending));
+            localStorage.setItem("mis_students", JSON.stringify(students));
+            localStorage.setItem("mis_grades", JSON.stringify(gradesDb));
+            localStorage.setItem("mis_credentials", JSON.stringify(credentialsDb));
+
+            alert(`Enrolled: ${app.student} assigned into Stream ${dynamicAssignedStream}. ID Token: ${sId}`);
+            renderStudentApprovals();
+            populateAdminSelectors();
+        }
+
+        function purgeStudent(studentId) {
+            if(confirm("Confirm structural deletion from application matrix lines?")) {
+                students = students.filter(s => s.id !== studentId);
+                gradesDb = gradesDb.filter(g => g.studentId !== studentId);
+                credentialsDb = credentialsDb.filter(c => c.targetId !== studentId);
+                localStorage.setItem("mis_students", JSON.stringify(students));
+                localStorage.setItem("mis_grades", JSON.stringify(gradesDb));
+                localStorage.setItem("mis_credentials", JSON.stringify(credentialsDb));
+                renderStudentApprovals();
+                populateAdminSelectors();
+                renderCredentials();
+            }
+        }
+
+        function renderTeacherApprovals() {
+            let pending = JSON.parse(localStorage.getItem("teacher_applications")) || [];
+            const queue = document.getElementById("teacherApprovalQueueBody");
+            queue.innerHTML = "";
+            if(pending.length === 0) {
+                queue.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8;">No pending instructor applications.</td></tr>`;
+            } else {
+                pending.forEach((app, idx) => {
+                    queue.innerHTML += `<tr>
+                        <td><strong>${app.name}</strong></td>
+                        <td>${app.qualification}</td>
+                        <td>${app.experience} Yrs</td>
+                        <td><button class="btn btn-accent" style="padding:6px 12px; font-size:12px; width:auto;" onclick="approveTeacher(${idx})">Approve & Map Focus</button></td>
+                    </tr>`;
+                });
+            }
+
+            const faculty = document.getElementById("adminTeachersTableBody");
+            faculty.innerHTML = "";
+            teachers.forEach(t => {
+                faculty.innerHTML += `<tr>
+                    <td><code>${t.id}</code></td>
+                    <td><strong>${t.name}</strong></td>
+                    <td><span class="badge badge-green">${t.subject}</span></td>
+                    <td>${t.qualification}</td>
+                    <td><button class="btn btn-danger" style="padding:6px 12px; font-size:12px; width:auto;" onclick="purgeTeacher('${t.id}')">Delete Entry</button></td>
+                </tr>`;
+            });
+            document.getElementById("statTeachers").innerText = teachers.length;
+        }
+
+        function approveTeacher(index) {
+            let pending = JSON.parse(localStorage.getItem("teacher_applications")) || [];
+            let app = pending[index];
+            
+            let selectedSubject = prompt("Assign Focus Subject Area out of active array Matrix:\n" + curriculumSubjects["O-Level"].join(", "), "Mathematics");
+            if(!curriculumSubjects["O-Level"].includes(selectedSubject)) {
+                alert("Invalid curriculum subject chosen. Defaulting focus target alignment to Mathematics.");
+                selectedSubject = "Mathematics";
+            }
+
+            let tId = "T-0" + (teachers.length + 1);
+            teachers.push({ id: tId, name: app.name, subject: selectedSubject, qualification: app.qualification, experience: app.experience });
+            
+            credentialsDb.push({ name: app.name, role: "Teacher", user: `teacher${teachers.length}`, pass: "teach123", targetId: tId });
+
+            pending.splice(index, 1);
+            localStorage.setItem("teacher_applications", JSON.stringify(pending));
+            localStorage.setItem("mis_teachers", JSON.stringify(teachers));
+            localStorage.setItem("mis_credentials", JSON.stringify(credentialsDb));
+
+            alert(`Faculty Member authorized. Focused subject access mapped to: [${selectedSubject}]`);
+            renderTeacherApprovals();
+            renderCredentials();
+        }
+
+        function purgeTeacher(teacherId) {
+            if(confirm("Permanently delete faculty registration credentials?")) {
+                teachers = teachers.filter(t => t.id !== teacherId);
+                credentialsDb = credentialsDb.filter(c => c.targetId !== teacherId);
+                localStorage.setItem("mis_teachers", JSON.stringify(teachers));
+                localStorage.setItem("mis_credentials", JSON.stringify(credentialsDb));
+                renderTeacherApprovals();
+                renderCredentials();
+            }
+        }
+
+        function renderCredentials() {
+            const tbody = document.getElementById("credentialsAssignmentTable");
+            tbody.innerHTML = "";
+            credentialsDb.forEach(c => {
+                let passDisplay = (c.role === 'Admin') ? "•••••••• [Secure Link]" : `Active [${c.pass}]`;
+                tbody.innerHTML += `<tr>
+                    <td><strong>${c.name}</strong></td>
+                    <td><span class="badge badge-blue">${c.role}</span></td>
+                    <td><code>${c.user}</code></td>
+                    <td><small style="color:#10b981; font-weight:600;">${passDisplay}</small></td>
+                </tr>`;
+            });
+        }
+
+        function populateUserTargetSelect() {
+            let role = document.getElementById("credRoleTarget").value;
+            let userTargetSel = document.getElementById("credUserTarget");
+            userTargetSel.innerHTML = `<option value="">-- Select Specific Target Identity --</option>`;
+
+            if(role === 'Admin') {
+                userTargetSel.innerHTML += `<option value="ADMIN">System Admin Node</option>`;
+            } else if(role === 'Teacher') {
+                teachers.forEach(t => { userTargetSel.innerHTML += `<option value="${t.id}">${t.name} (${t.id})</option>`; });
+            } else if(role === 'Student' || role === 'Parent') {
+                students.forEach(s => { userTargetSel.innerHTML += `<option value="${s.id}">${s.student} (${s.id})</option>`; });
+            }
+        }
+
+        function handleAssignCredentials(event) {
+            event.preventDefault();
+            let role = document.getElementById("credRoleTarget").value;
+            let targetId = document.getElementById("credUserTarget").value;
+            let username = document.getElementById("credAssignedUser").value;
+            let passkey = document.getElementById("credAssignedPass").value;
+
+            let targetIndex = credentialsDb.findIndex(c => c.role === role && c.targetId === targetId);
+            
+            let nameString = "Reset Matrix User";
+            if(role==='Admin') nameString = "System Admin Node";
+            else if(role==='Teacher') {
+                let tRef = teachers.find(t=>t.id===targetId);
+                nameString = tRef.name;
+                
+                let changeSubject = confirm(`Currently mapped to: [${tRef.subject}]. Do you want to re-route focus target subject node?`);
+                if(changeSubject) {
+                    let selectedSubject = prompt("Enter one specific curriculum module parameter focus:\n" + curriculumSubjects["O-Level"].join(", "), tRef.subject);
+                    if(curriculumSubjects["O-Level"].includes(selectedSubject)) {
+                        tRef.subject = selectedSubject;
+                        localStorage.setItem("mis_teachers", JSON.stringify(teachers));
+                    }
+                }
+            }
+            else nameString = (role==='Student') ? students.find(s=>s.id===targetId).student : students.find(s=>s.id===targetId).parent;
+
+            if(targetIndex > -1) {
+                credentialsDb[targetIndex].user = username;
+                credentialsDb[targetIndex].pass = passkey;
+            } else {
+                credentialsDb.push({ name: nameString, role: role, user: username, pass: passkey, targetId: targetId });
+            }
+
+            localStorage.setItem("mis_credentials", JSON.stringify(credentialsDb));
+            alert(`Credentials persistently written into framework storage ledger array for ${nameString}`);
+            
+            document.getElementById("credAssignedUser").value = "";
+            document.getElementById("credAssignedPass").value = "";
+            renderCredentials();
+        }
+
+        function executeTeacherVlookup() {
+            let searchId = document.getElementById("vlookupSearchId").value.trim();
+            if(!searchId) { alert("Please input a valid target registration ID."); return; }
+            if(!currentActiveTeacher) return;
+
+            let studentMatch = students.find(s => s.id.toLowerCase() === searchId.toLowerCase());
+            
+            if(studentMatch) {
+                document.getElementById("vlookupResultsArea").style.display = "block";
+                document.getElementById("vlOutName").innerText = studentMatch.student;
+                document.getElementById("vlOutClass").innerText = studentMatch.className;
+                document.getElementById("vlOutStream").innerText = "Stream " + studentMatch.stream;
+
+                let lockedSub = currentActiveTeacher.subject;
+                let targetGradeRecord = gradesDb.find(g => g.studentId.toLowerCase() === searchId.toLowerCase() && g.subject.toLowerCase() === lockedSub.toLowerCase());
+                
+                let tableRowsHtml = "";
+                if(targetGradeRecord) {
+                    tableRowsHtml = `<tr>
+                        <td><strong>${targetGradeRecord.subject}</strong></td>
+                        <td><code>${targetGradeRecord.mark}%</code></td>
+                        <td><span class="badge badge-green">${targetGradeRecord.grade}</span></td>
+                    </tr>`;
+                } else {
+                    tableRowsHtml = `<tr><td colspan="3" style="text-align:center;">No grading entries found for focus subject [${lockedSub}].</td></tr>`;
+                }
+                document.getElementById("vlookupGradeTableBody").innerHTML = tableRowsHtml;
+            } else {
+                alert("VLOOKUP Error: No student reference match discovered within structural lines.");
+                document.getElementById("vlookupResultsArea").style.display = "none";
+            }
+        }
+
+        function populateAdminSelectors() {
+            const sel = document.getElementById("adminReportSelect");
+            sel.innerHTML = `<option value="">-- Choose Student Record Node --</option>`;
+            students.forEach(s => { sel.innerHTML += `<option value="${s.id}">${s.student} (${s.id})</option>`; });
+        }
+
+        function constructReportHTML(studentObj) {
+            let records = gradesDb.filter(g => g.studentId === studentObj.id);
+            let innerRows = "";
+            records.forEach(r => {
+                innerRows += `<tr><td><strong>${r.subject}</strong></td><td style="text-align:center;">${r.mark}</td><td style="text-align:center; font-weight:700;">${r.grade}</td><td>Acclaimed module milestone evaluation entry.</td></tr>`;
+            });
+            return `
+                <div class="report-card-print">
+                    <div class="report-header">
+                        <h2>NAMUNGOONA HIGH SCHOOL</h2>
+                        <p>P.O. Box 26935, Kampala, Uganda | Tel: 0788772660</p>
+                        <p style="font-size:10px; text-transform:uppercase; margin-top:2px; font-weight:700;">Strive To Excel • Academic Transcript Ledger</p>
+                    </div>
+                    <div class="report-meta">
+                        <div><strong>Student Full Name:</strong> ${studentObj.student}</div>
+                        <div><strong>System ID Node:</strong> ${studentObj.id}</div>
+                        <div><strong>Class Assignment:</strong> ${studentObj.className} (Stream ${studentObj.stream})</div>
+                        <div><strong>Academic Term Scope:</strong> 2026 Session - Term One</div>
+                    </div>
+                    <table>
+                        <thead><tr><th style="width:35%;">Subject Module</th><th style="width:15%; text-align:center;">Score (%)</th><th style="width:15%; text-align:center;">Grade</th><th style="width:35%;">Instructor Remarks</th></tr></thead>
+                        <tbody>${innerRows || '<tr><td colspan="4" style="text-align:center;">No grading data metrics loaded.</td></tr>'}</tbody>
+                    </table>
+                    <div class="report-comments-block">
+                        <div class="comment-line"><strong>Class Teacher Remarks:</strong> Regular learner attendance profile with consistent assignment submissions.</div>
+                        <div class="comment-line"><strong>Headteacher Verdict:</strong> Promising academic track. Keep up the high effort framework.</div>
+                    </div>
+                    <div class="report-signatures">
+                        <div class="sig-space">Class Teacher Signature<div class="sig-line"></div></div>
+                        <div class="sig-space">Institutional Stamp Date<div class="sig-line"></div></div>
+                        <div class="sig-space">Headteacher Authorization<div class="sig-line"></div></div>
+                    </div>
+                    <div class="report-summary-box-ui">
+                        <div><span>Status: <strong>Active Data Registry</strong></span></div>
+                        <button class="btn btn-accent" style="width:auto; padding:6px 15px; font-size:11px;" onclick="window.print()">Print Transcript Page</button>
+                    </div>
+                </div>`;
+        }
+
+        function renderAdminReportCard() {
+            let id = document.getElementById("adminReportSelect").value;
+            if(!id) { document.getElementById("adminPrintArea").innerHTML = ""; return; }
+            let match = students.find(s => s.id === id);
+            document.getElementById("adminPrintArea").innerHTML = constructReportHTML(match);
+        }
+
+        function exitPortal() { 
+            document.getElementById("portalDashboard").style.display = "none"; 
+            document.getElementById("authContainer").style.display = "grid"; 
+            document.getElementById("adminUser").value = "";
+            document.getElementById("adminPass").value = "";
+            currentActiveTeacher = null;
+        }
+
+        generateSeedData();
+    </script>
+</body>
+</html>
