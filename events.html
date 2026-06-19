@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Events Calendar | Congress High School</title>
+
+<!-- SVG Badge Logo integrated directly as a Tab Icon (Favicon) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5z'/%3E%3Cpath d='M2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f1f5f9;
+color:#0f172a;
+}
+
+/* Navigation Base */
+nav {
+background: linear-gradient(90deg, #0f172a, #1e3a8a, #0f172a);
+padding: 18px 40px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+position: sticky;
+top: 0;
+z-index: 1000;
+box-shadow: 0 4px 30px rgba(15, 23, 42, 0.15);
+}
+
+.nav-brand {
+display: flex;
+align-items: center;
+gap: 10px;
+color: white;
+font-weight: 700;
+font-size: 18px;
+letter-spacing: 1px;
+}
+
+.nav-brand svg {
+width: 24px;
+height: 24px;
+fill: #fde047;
+}
+
+.nav-links {
+display: flex;
+gap: 30px;
+align-items: center;
+}
+
+nav a {
+color: #94a3b8;
+text-decoration: none;
+font-weight: 500;
+font-size: 14px;
+letter-spacing: 0.5px;
+transition: .3s ease;
+position: relative;
+padding-bottom: 4px;
+}
+
+nav a::after {
+content: '';
+position: absolute;
+width: 0;
+height: 2px;
+bottom: 0;
+left: 0;
+background-color: #fde047;
+transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+width: 100%;
+}
+
+nav a:hover, nav a.active {
+color: white;
+}
+
+/* Mobile Nav Menu Components */
+.menu-toggle {
+display: none;
+flex-direction: column;
+gap: 5px;
+cursor: pointer;
+background: none;
+border: none;
+z-index: 1001;
+}
+
+.menu-toggle span {
+display: block;
+width: 25px;
+height: 3px;
+background-color: white;
+border-radius: 3px;
+transition: 0.3s ease;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(30, 58, 138, 0.85)), url("https://images.unsplash.com/photo-1511795409834-ef04bbd61622");
+background-size: cover;
+background-position: center;
+padding: 80px 20px;
+text-align: center;
+color: white;
+}
+
+.dashboard-header h1 {
+font-size: 3rem;
+font-weight: 700;
+letter-spacing: 0.5px;
+margin-bottom: 12px;
+}
+
+.dashboard-header p {
+font-size: 1.15rem;
+color: #cbd5e1;
+max-width: 600px;
+margin: 0 auto;
+font-weight: 300;
+line-height: 1.6;
+}
+
+/* Container */
+.container{
+width:92%;
+max-width:1240px;
+margin:auto;
+padding:50px 0;
+}
+
+/* Admin Panel Form */
+.admin-panel {
+background: white;
+border-radius: 20px;
+padding: 40px;
+box-shadow: 0 10px 25px rgba(15, 23, 42, 0.03);
+border: 1px solid #e2e8f0;
+margin-bottom: 50px;
+}
+
+.admin-panel h2 {
+color: #0f172a;
+font-size: 1.5rem;
+margin-bottom: 30px;
+font-weight: 600;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.admin-panel h2::before {
+content: '';
+display: inline-block;
+width: 4px;
+height: 24px;
+background: #2563eb;
+border-radius: 4px;
+}
+
+.form-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+gap: 25px;
+margin-bottom: 30px;
+}
+
+.form-group {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+.form-group.full-width {
+grid-column: 1 / -1;
+}
+
+.form-group label {
+font-size: 12px;
+font-weight: 600;
+color: #64748b;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+padding: 14px 16px;
+border: 1px solid #e2e8f0;
+border-radius: 10px;
+font-size: 14px;
+color: #0f172a;
+background: #f8fafc;
+transition: all 0.2s ease;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+outline: none;
+border-color: #2563eb;
+background: white;
+box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.submit-btn {
+background: #2563eb;
+color: white;
+border: none;
+padding: 14px 35px;
+font-size: 14px;
+font-weight: 600;
+border-radius: 10px;
+cursor: pointer;
+transition: all 0.2s ease;
+}
+
+.submit-btn:hover {
+background: #1d4ed8;
+box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+/* Events Grid Layout */
+.events-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+gap: 30px;
+}
+
+/* Event Cards */
+.event-card {
+background: white;
+border-radius: 16px;
+overflow: hidden;
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+border: 1px solid #e2e8f0;
+transition: all 0.3s ease;
+display: flex;
+flex-direction: column;
+}
+
+.event-card:hover {
+transform: translateY(-4px);
+box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.event-img-wrapper {
+position: relative;
+height: 230px;
+overflow: hidden;
+background: #edf2f7;
+}
+
+.event-card img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+transition: transform 0.5s ease;
+}
+
+.event-card:hover img {
+transform: scale(1.03);
+}
+
+.date-badge {
+position: absolute;
+top: 20px;
+left: 20px;
+background: white;
+color: #0f172a;
+padding: 8px 14px;
+border-radius: 10px;
+font-size: 11px;
+font-weight: 700;
+box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+display: flex;
+flex-direction: column;
+align-items: center;
+line-height: 1.2;
+}
+
+.date-badge span.day {
+font-size: 18px;
+font-weight: 700;
+color: #2563eb;
+}
+
+.fee-badge {
+position: absolute;
+top: 20px;
+right: 20px;
+background: #10b981;
+color: white;
+padding: 6px 14px;
+border-radius: 30px;
+font-size: 12px;
+font-weight: 600;
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.fee-badge.free {
+background: #475569;
+}
+
+.event-content {
+padding: 28px;
+display: flex;
+flex-direction: column;
+flex-grow: 1;
+}
+
+.event-type {
+font-size: 11px;
+font-weight: 700;
+text-transform: uppercase;
+color: #2563eb;
+letter-spacing: 0.5px;
+margin-bottom: 10px;
+}
+
+.event-content h3 {
+color: #0f172a;
+font-size: 1.35rem;
+margin-bottom: 12px;
+line-height: 1.4;
+font-weight: 600;
+}
+
+.event-content p.description {
+color: #475569;
+font-size: 14.5px;
+line-height: 1.6;
+margin-bottom: 24px;
+flex-grow: 1;
+}
+
+.view-details-btn {
+align-self: flex-start;
+color: #2563eb;
+background: none;
+border: none;
+font-weight: 600;
+font-size: 14px;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 5px;
+transition: 0.2s ease;
+}
+
+.view-details-btn:hover {
+color: #1d4ed8;
+gap: 8px;
+}
+
+/* Modal Layout styles */
+.modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(15, 23, 42, 0.4);
+backdrop-filter: blur(8px);
+z-index: 2000;
+justify-content: center;
+align-items: center;
+padding: 20px;
+}
+
+.modal-content {
+background: white;
+width: 100%;
+max-width: 650px;
+max-height: 90vh;
+border-radius: 16px;
+overflow-y: auto;
+box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+position: relative;
+}
+
+.modal-header-img {
+width: 100%;
+height: 260px;
+object-fit: cover;
+}
+
+.modal-body {
+padding: 35px;
+}
+
+.modal-close {
+position: absolute;
+top: 20px;
+right: 20px;
+background: white;
+border: none;
+width: 36px;
+height: 36px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 22px;
+cursor: pointer;
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+color: #475569;
+transition: 0.2s;
+z-index: 10;
+}
+
+.modal-close:hover {
+color: #ef4444;
+}
+
+.modal-meta {
+font-size: 13px;
+color: #64748b;
+margin-bottom: 16px;
+display: flex;
+gap: 20px;
+font-weight: 500;
+}
+
+.modal-title {
+font-size: 1.7rem;
+color: #0f172a;
+font-weight: 700;
+line-height: 1.35;
+margin-bottom: 20px;
+}
+
+.modal-text {
+color: #475569;
+font-size: 15px;
+line-height: 1.75;
+}
+
+/* Footer layout rules */
+footer{
+background: #0f172a;
+color:#94a3b8;
+padding:70px 20px 40px;
+margin-top:100px;
+text-align:center;
+border-top: 1px solid #1e293b;
+}
+
+footer h2{
+margin-bottom:20px;
+color:white;
+font-size: 1.8rem;
+font-weight: 600;
+}
+
+footer p{
+line-height:1.75;
+font-size:15px;
+max-width: 700px;
+margin: 0 auto;
+}
+
+.footer-bottom{
+margin-top:50px;
+padding-top:25px;
+border-top:1px solid #1e293b;
+font-size: 13px;
+}
+
+/* Responsive Grid and Mobile Dropdown Layout Styles */
+@media(max-width:768px){
+.dashboard-header h1 { font-size: 2.2rem; }
+.container { padding: 30px 0; }
+.admin-panel { padding: 25px; }
+.events-grid { grid-template-columns: 1fr; }
+.modal-body { padding: 25px; }
+
+nav {
+padding: 15px 20px;
+position: relative;
+}
+
+.menu-toggle {
+display: flex;
+}
+
+.nav-links {
+display: none;
+flex-direction: column;
+width: 100%;
+position: absolute;
+top: 100%;
+left: 0;
+background: #0f172a;
+box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+padding: 20px 0;
+gap: 20px;
+border-top: 1px solid #1e293b;
+}
+
+.nav-links.active {
+display: flex;
+}
+
+nav a {
+padding: 5px 0;
+width: 100%;
+text-align: center;
+}
+
+nav a::after {
+display: none;
+}
+}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="nav-brand">
+    <!-- SVG Badge Matching the Favicon Header -->
+    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    <span>CHS</span>
+</div>
+
+<button class="menu-toggle" id="mobileMenuBtn" aria-label="Toggle navigation">
+<span></span>
+<span></span>
+<span></span>
+</button>
+
+<div class="nav-links" id="navLinksContainer">
+<a href="index.html">Home</a>
+<a href="admissions.html">Admissions</a>
+<a href="portals.html">Portals</a>
+<a href="constitution.html">Constitution</a>
+<a href="articles.html">Articles</a>
+<a href="events.html" class="active">Events</a>
+<a href="contact.html">Contact</a>
+</div>
+</nav>
+
+<div class="dashboard-header">
+<h1>School Events & Activities</h1>
+<p>Keep track of timelines, upcoming competitions, tours, and school traditions</p>
+</div>
+
+<div class="container">
+
+<div class="admin-panel">
+<h2>Contribute / Schedule an Event</h2>
+<form id="eventForm">
+<div class="form-grid">
+<div class="form-group">
+<label for="evtTitle">Event Title</label>
+<input type="text" id="evtTitle" placeholder="e.g., Music Dance & Drama Festival" required>
+</div>
+<div class="form-group">
+<label for="evtType">Activity Classification</label>
+<select id="evtType" required>
+<option value="Academic Tour">Academic Tour</option>
+<option value="Internal Competition">Internal Competition</option>
+<option value="Sports Tournament">Sports Tournament</option>
+<option value="School Ceremony">School Ceremony</option>
+<option value="General Activity">General Activity</option>
+</select>
+</div>
+<div class="form-group">
+<label for="evtDate">Event Date</label>
+<input type="date" id="evtDate" required>
+</div>
+<div class="form-group">
+<label for="evtFee">Participation Fee (UGX)</label>
+<input type="text" id="evtFee" placeholder="e.g., Shs 60,000 or Free" required>
+</div>
+<div class="form-group full-width">
+<label for="evtImage">Cover Image Link (Direct URL)</label>
+<input type="url" id="evtImage" placeholder="https://images.unsplash.com/..." value="https://images.unsplash.com/photo-1511578314322-379afb476865">
+</div>
+<div class="form-group full-width">
+<label for="evtDesc">Comprehensive Details & Schedule Parameters</label>
+<textarea id="evtDesc" rows="4" placeholder="Detail the timeline parameters, target classes, assembly locations, items required, and overall scope of the scheduled activity..." required></textarea>
+</div>
+</div>
+<button type="submit" class="submit-btn">Publish Event</button>
+</form>
+</div>
+
+<div class="events-grid" id="eventsGrid">
+</div>
+</div>
+
+<div class="modal" id="eventModal">
+<div class="modal-content">
+<button class="modal-close" onclick="closeModal()">&times;</button>
+<img id="modalImg" class="modal-header-img" src="" alt="Event Backdrop">
+<div class="modal-body">
+<div class="modal-meta">
+<span id="modalType" style="font-weight:700; color:#2563eb; text-transform:uppercase;"></span>
+<span id="modalDate"></span>
+<span id="modalFee" style="font-weight:700; color:#10b981;"></span>
+</div>
+<h2 id="modalTitle" class="modal-title"></h2>
+<p id="modalText" class="modal-text"></p>
+</div>
+</div>
+</div>
+
+<footer>
+<h2>Congress High School</h2>
+<p style="margin-bottom: 20px;">
+P.O. Box 26935, Kampala, Uganda &bull; Tel: 0788772660 / 0700627960<br>
+Location: 5 Miles Along Hoima Road, 100 Metres Off Nakibinge Stage
+</p>
+<p style="color: #64748b; font-size: 14px;">
+The school staff consists of qualified, experienced and well-trained professionals.
+We provide safe drinking water, a standby generator, a conducive learning environment,
+and train citizens of social value for the future.
+</p>
+<div class="footer-bottom">
+<p>
+atya omusana<br>
+&copy; 2026 Congress High School. All Rights Reserved.
+</p>
+</div>
+</footer>
+
+<script>
+// Toggle mobile navigation drop-down logic
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const navLinksContainer = document.getElementById('navLinksContainer');
+
+mobileMenuBtn.addEventListener('click', () => {
+navLinksContainer.classList.toggle('active');
+});
+
+// Base Repository initializing requested events
+const schoolEvents = [
+{
+title: "Leaders Swearing In and Hand Over Ceremony",
+type: "School Ceremony",
+rawDate: "2026-06-01",
+displayDate: "June 01, 2026",
+dayBadge: "01",
+monthBadge: "JUN",
+fee: "Free",
+img: "https://images.unsplash.com/photo-1541872703-74c5e44368f9",
+description: "The official transition of power where outgoing student body executives hand over constitutional instruments, badges, and ministerial files to the newly elected Student Council representatives.",
+fullDetails: "The entire student body, along with members of the Board of Governors and administration, will gather on the central assembly grounds to witness this mandatory governance milestone. Outgoing student ministers will present final accountability updates, followed by the formal administration of the oath of office for the incoming student cabinet. Attendance is compulsory for all students as we salute our leaders."
+},
+{
+title: "Science and Technology Tour",
+type: "Academic Tour",
+rawDate: "2026-06-16",
+displayDate: "June 16, 2026",
+dayBadge: "16",
+monthBadge: "JUN",
+fee: "Shs 60,000",
+img: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e",
+description: "An intensive educational excursion exploring advanced technical setups, industrial automation, and real-world engineering facilities.",
+fullDetails: "This science-centered tour offers our advanced and ordinary level physics, chemistry, and ICT students an excellent opportunity to interface directly with industrial tech experts. Transport will depart the main gate block exactly at 7:00 AM. The contribution fee covers travel expenses, entry clearance, safety gear, and packed lunch. Payments must be verified through the bursar's portal beforehand."
+},
+{
+title: "Interhouse Debate and Quiz Championship",
+type: "Internal Competition",
+rawDate: "2026-06-17",
+displayDate: "June 17, 2026",
+dayBadge: "17",
+monthBadge: "JUN",
+fee: "Free",
+img: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846",
+description: "The ultimate academic battle of wits and public speaking prowess as all residential blocks compete in structured socio-economic debates and trivia.",
+fullDetails: "Hosted inside the central school library pavilion, this year's competition will focus heavily on regional economic trends, constitutional history, and scientific discoveries. Points accumulated will contribute directly to the overall year-end Interhouse Trophy system. Come out and cheer for your respective houses!"
+},
+{
+title: "Geography Field Tour",
+type: "Academic Tour",
+rawDate: "2026-06-24",
+displayDate: "June 24, 2026",
+dayBadge: "24",
+monthBadge: "JUN",
+fee: "Shs 60,000",
+img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
+description: "Practical field examination exploring geographical features, landform classifications, environmental adaptations, and soil profiles.",
+fullDetails: "This practical field trip provides necessary hands-on research and case-study data collection preparation for upcoming regional papers. Students are required to bring clean field notebooks, drawing instruments, and weather-appropriate wear. Registration sheets can be processed through the department heads up until June 20th."
+},
+{
+title: "Interhouse Football Tournament",
+type: "Sports Tournament",
+rawDate: "2026-06-26",
+displayDate: "June 26, 2026",
+dayBadge: "26",
+monthBadge: "JUN",
+fee: "Free",
+img: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2",
+description: "A highly anticipated tournament showcasing athletic discipline and teamwork across all competitive student houses on the sports field.",
+fullDetails: "Matches kick off on the primary sports grounds starting at 2:00 PM under the strict supervision of qualified games masters. Team captains are reminded to verify squad registrations 48 hours prior to the tournament opening whistle. Clean play and absolute discipline are strictly expected."
+},
+{
+title: "Interhouse Netball Tournament",
+type: "Sports Tournament",
+rawDate: "2026-06-30",
+displayDate: "June 30, 2026",
+dayBadge: "30",
+monthBadge: "JUN",
+fee: "Free",
+img: "https://images.unsplash.com/photo-1551958219-acbc608c6377",
+description: "Closing our sporting month with an energetic netball championship highlighting agility, focus, and house coordination.",
+fullDetails: "The tournament bracket will follow an open knockout layout. Inter-house points will be awarded immediately following trophy and medal distribution at the evening assembly. Students are encouraged to attend and support their house teams loudly and respectfully."
+}
+];
+
+const monthsMap = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+function renderEvents() {
+const grid = document.getElementById('eventsGrid');
+grid.innerHTML = '';
+
+schoolEvents.sort((a, b) => new Date(a.rawDate) - new Date(b.rawDate));
+
+schoolEvents.forEach((evt, idx) => {
+const isFree = evt.fee.toLowerCase() === 'free';
+const feeClass = isFree ? 'fee-badge free' : 'fee-badge';
+
+const card = document.createElement('div');
+card.className = 'event-card';
+card.innerHTML = `
+<div class="event-img-wrapper">
+<div class="date-badge">
+<span class="day">${evt.dayBadge}</span>
+<span>${evt.monthBadge}</span>
+</div>
+<span class="${feeClass}">${evt.fee}</span>
+<img src="${evt.img}" alt="${evt.title}">
+</div>
+<div class="event-content">
+<div class="event-type">${evt.type}</div>
+<h3>${evt.title}</h3>
+<p class="description">${evt.description}</p>
+<button class="view-details-btn" onclick="openEvent(${idx})">View Event Parameters &rarr;</button>
+</div>
+`;
+grid.appendChild(card);
+});
+}
+
+function openEvent(index) {
+const evt = schoolEvents[index];
+document.getElementById('modalImg').src = evt.img;
+document.getElementById('modalType').innerText = evt.type;
+document.getElementById('modalDate').innerText = evt.displayDate;
+document.getElementById('modalFee').innerText = `Entry/Fee Status: ${evt.fee}`;
+document.getElementById('modalTitle').innerText = evt.title;
+document.getElementById('modalText').innerText = evt.fullDetails || evt.description;
+
+document.getElementById('eventModal').style.display = 'flex';
+}
+
+function closeModal() {
+document.getElementById('eventModal').style.display = 'none';
+}
+
+document.getElementById('eventForm').addEventListener('submit', function(e) {
+e.preventDefault();
+
+const title = document.getElementById('evtTitle').value.trim();
+const type = document.getElementById('evtType').value;
+const rawDate = document.getElementById('evtDate').value;
+const feeInput = document.getElementById('evtFee').value.trim();
+let img = document.getElementById('evtImage').value.trim();
+
+if(!img) {
+img = "https://images.unsplash.com/photo-1511578314322-379afb476865";
+}
+
+const desc = document.getElementById('evtDesc').value.trim();
+
+const dateObj = new Date(rawDate);
+const dayBadge = String(dateObj.getDate()).padStart(2, '0');
+const monthBadge = monthsMap[dateObj.getMonth()];
+const displayDate = dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+schoolEvents.push({
+title: title,
+type: type,
+rawDate: rawDate,
+displayDate: displayDate,
+dayBadge: dayBadge,
+monthBadge: monthBadge,
+fee: feeInput,
+img: img,
+description: desc.length > 110 ? desc.substring(0, 110) + "..." : desc,
+fullDetails: desc
+});
+
+renderEvents();
+document.getElementById('eventForm').reset();
+});
+
+window.onclick = function(event) {
+const modal = document.getElementById('eventModal');
+if (event.target == modal) {
+modal.style.display = "none";
+}
+}
+
+renderEvents();
+</script>
+
+</body>
+</html>
