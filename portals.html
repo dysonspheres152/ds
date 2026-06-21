@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Management Engine - Congress High School</title>
+    
+    <!-- Favicon referencing the specific file asset verbatim -->
+    <link rel="icon" type="image/png" href="BADGE.png">
+    
+    <!-- Poppins Font from Index Page -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0a2540;
+            --secondary: #639fab;
+            --accent: #f2a900;
+            --bg-light: #f8f9fa;
+            --text-dark: #1c2d42;
+            --success: #2ec4b6;
+            --danger: #e63946;
+            --warning: #f39c12;
+            
+            /* Integrated Multi-Color Gradient Palettes requested by user */
+            --gradient-master: linear-gradient(135deg, #0000ff, #ffffff, #0a2540, #4b0082, #ff0000, #008000, #ffa500);
+            --gradient-soft: linear-gradient(90deg, #0f172a, #2563eb, #10b981);
+            --gradient-accent: linear-gradient(45deg, #ffa500, #ff0000, #4b0082);
+            --gradient-btn-success: linear-gradient(135deg, #008000, #ffffff, #008000);
+            --gradient-btn-danger: linear-gradient(135deg, #ff0000, #ffffff, #ff0000);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        /* Top Bar Index Navigation Header Implementation */
+        .index-nav-header {
+            background: linear-gradient(90deg, #0f172a, #2563eb, #10b981);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.15);
+        }
+
+        .index-nav-header a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            transition: .3s ease;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .index-nav-header a:hover {
+            color: #fde047;
+        }
+
+        /* Authentication Layer Custom Gradient Background */
+        #auth-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--gradient-master);
+            background-size: 400% 400%;
+            animation: gradientShift 25s ease infinite;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.96);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            width: 380px;
+            text-align: center;
+            border: 3px solid #0a2540;
+        }
+
+        .login-box h2 {
+            margin-bottom: 5px;
+            color: #0a2540;
+            font-weight: 800;
+        }
+
+        .login-box input, .login-box select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-weight: 500;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background: var(--gradient-accent);
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .login-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Core Application Layout */
+        #app-container {
+            display: none;
+        }
+
+        header {
+            background: var(--gradient-soft);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border-bottom: 4px solid #ffa500;
+        }
+
+        header .school-info h1 {
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        header .school-info p {
+            margin: 5px 0 0 0;
+            font-style: italic;
+            color: #ffffff;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .user-profile-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* Navigation Portal Bar (Dashboard Nav) */
+        .portal-nav {
+            background: #112233;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 2px solid #cbd5e1;
+        }
+
+        .portal-nav button {
+            background: transparent;
+            border: none;
+            color: #b0c4de;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .portal-nav button.active, .portal-nav button:hover {
+            background: var(--gradient-accent);
+            color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Content Layout Engine */
+        .workspace {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+            min-height: 500px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin-bottom: 30px;
+            display: none;
+            border-top: 4px solid #0a2540;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        h2.panel-title {
+            border-bottom: 2px solid var(--bg-light);
+            padding-bottom: 10px;
+            color: var(--primary);
+            margin-top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Data Representation Tables */
+        table.data-matrix {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table.data-matrix th, table.data-matrix td {
+            border: 1px solid #e2e8f0;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        table.data-matrix th {
+            background: var(--gradient-soft);
+            color: white;
+        }
+
+        table.data-matrix tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Action Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s, filter 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+
+        .btn:hover {
+            filter: brightness(0.95);
+            transform: translateY(-1px);
+        }
+
+        .btn-success { background: var(--gradient-btn-success); color: #000; border: 1px solid #008000; }
+        .btn-danger { background: var(--gradient-btn-danger); color: #000; border: 1px solid #ff0000; }
+        .btn-primary { background: var(--gradient-soft); color: white; }
+        .btn-accent { background: var(--gradient-accent); color: white; }
+        .btn-warning { background: #ffa500; color: black; }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        /* Report Layout Frame */
+        .report-card-printout {
+            background: #fff;
+            border: 5px double var(--primary);
+            padding: 30px;
+            margin: 20px auto;
+            color: #000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 210mm;
+            min-height: 297mm;
+            box-sizing: border-box;
+            page-break-after: always;
+        }
+
+        .report-header-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .report-header-flex img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+        }
+
+        .report-header-text {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        /* Synchronized High-Fidelity Index Page Footer */
+        footer {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a, #064e3b);
+            color: white;
+            padding: 60px 20px;
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        footer h2 {
+            margin-bottom: 20px;
+            color: #fde047;
+            font-size: 2rem;
+            letter-spacing: 1px;
+        }
+
+        footer p {
+            line-height: 2;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .footer-bottom {
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255,255,255,.15);
+        }
+
+        @media print {
+            body * { visibility: hidden; }
+            .printable-area, .printable-area * { visibility: visible; }
+            .printable-area { position: absolute; left: 0; top: 0; width: 100%; }
+            .report-card-printout {
+                border: 5px double #000 !important;
+                box-shadow: none !important;
+                margin: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Bar Navigation Header matching the index page visual format style -->
+    <div class="index-nav-header">
+        <a href="index.html">Home</a>
+        <a href="admissions.html">Admissions</a>
+        <a href="portals.html" style="color:#fde047;">Portals</a>
+        <a href="constitution.html">Constitution</a>
+        <a href="articles.html">Articles</a>
+        <a href="events.html">Events</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <div id="auth-overlay">
+        <div class="login-box">
+            <h2>CONGRESS HIGH SCHOOL</h2>
+            <p style="color: #4b0082; font-style: italic; font-weight: bold;">"atya omusana"</p>
+            <hr style="border-color: #cbd5e1; margin: 20px 0;">
+            <div class="form-group" style="text-align: left;">
+                <label>Select Workspace Portal</label>
+                <select id="portal-selector">
+                    <option value="admin">Administrative Control Panel</option>
+                    <option value="dos">DOS Executive Terminal</option>
+                    <option value="teacher">Instructor Academic Portal</option>
+                    <option value="student">Student Virtual Desktop</option>
+                    <option value="parent">Parent Monitoring Framework</option>
+                </select>
+            </div>
+            <input type="text" id="login-username" placeholder="Access Username Key">
+            <input type="password" id="login-password" placeholder="Access Security Token">
+            <p id="login-error" style="color: var(--danger); font-size: 13px; font-weight: bold; display: none;">Invalid Portal Security Credentials.</p>
+            <button onclick="executeAuthenticationCheck()">Initialize System Authorization</button>
+        </div>
+    </div>
+
+    <div id="app-container">
+        <header>
+            <div class="school-info">
+                <h1>CONGRESS HIGH SCHOOL</h1>
+                <p>Motto: atya omusana</p>
+            </div>
+            <div class="user-profile-badge">
+                Authenticated Identity: <span id="current-user-display" style="color: #ffa500; font-weight: bold;">Global System Operator</span>
+                <button class="btn btn-danger" style="padding: 4px 10px; margin-left: 15px; font-size: 12px; font-weight: bold; color: white;" onclick="terminateSession()">Lock Gateway</button>
+            </div>
+        </header>
+
+        <!-- Secondary Bar Navigation inside administrative view context -->
+        <nav class="portal-nav" id="dynamic-navigation-bar"></nav>
+
+        <div class="workspace">
+
+            <!-- Shared View: Credentials Manager -->
+            <div id="admin-credentials-manager" class="panel admin-panel dos-panel">
+                <h2 class="panel-title">System Credentials Management</h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                    <div style="background: #f1f5f9; padding: 20px; border-radius: 8px;">
+                        <h3>Configure Admin Passkey</h3>
+                        <div class="form-group">
+                            <label>Admin Username</label>
+                            <input type="text" id="cfg-admin-user" value="james">
+                        </div>
+                        <div class="form-group">
+                            <label>Admin Password</label>
+                            <input type="password" id="cfg-admin-pass" value="1234">
+                        </div>
+                        <button class="btn btn-primary" onclick="updateSystemPasskeys('admin')">Save Admin Credentials</button>
+                    </div>
+                    <div style="background: #f1f5f9; padding: 20px; border-radius: 8px;">
+                        <h3>Configure DOS Executive Passkey</h3>
+                        <div class="form-group">
+                            <label>DOS Username</label>
+                            <input type="text" id="cfg-dos-user" value="dos">
+                        </div>
+                        <div class="form-group">
+                            <label>DOS Password</label>
+                            <input type="password" id="cfg-dos-pass" value="5678">
+                        </div>
+                        <button class="btn btn-primary" onclick="updateSystemPasskeys('dos')">Save DOS Credentials</button>
+                    </div>
+                </div>
+
+                <!-- Assignment Form Area for Teachers, Parents and Students -->
+                <div style="background: #e2e8f0; padding: 25px; border-radius: 8px; margin-bottom: 30px;">
+                    <h3>Assign Portal Access Credentials Matrix</h3>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; align-items: end;">
+                        <div class="form-group">
+                            <label>Target Account Type</label>
+                            <select id="cred-type-selector" onchange="populateCredentialTargetDropdown()">
+                                <option value="teacher">Teacher Assignment</option>
+                                <option value="student">Student Assignment</option>
+                                <option value="parent">Parent Assignment</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Select Profile Holder Target</label>
+                            <select id="cred-target-profile"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Assigned Username</label>
+                            <input type="text" id="cred-assigned-username" placeholder="eg. teacher.zam">
+                        </div>
+                        <div class="form-group">
+                            <label>Assigned Password / Token</label>
+                            <input type="password" id="cred-assigned-password" placeholder="••••••••">
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <button class="btn btn-success" onclick="commitAssignedCredentials()">Commit Access Credentials</button>
+                    </div>
+                </div>
+
+                <h3>Active Assigned Credentials Directory</h3>
+                <table class="data-matrix">
+                    <thead>
+                        <tr>
+                            <th>Account Type</th>
+                            <th>Target Entity Identifier Name</th>
+                            <th>Configured Username Access Key</th>
+                            <th>Configuration Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="credentials-assigned-table-body"></tbody>
+                </table>
+            </div>
+
+            <!-- Shared View: Student Registry Modifiers -->
+            <div id="admin-registrar-view" class="panel admin-panel dos-panel">
+                <h2 class="panel-title">
+                    <span>Active Student Database Registry</span>
+                    <button class="btn btn-success" onclick="toggleModal('add-student-modal', true)">+ Manual Onboard New Student Entry</button>
+                </h2>
+
+                <div id="add-student-modal" style="display:none; background: #f1f5f9; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #cbd5e1;">
+                    <h3 id="student-modal-title">Add Student Record Manually</h3>
+                    <input type="hidden" id="edit-student-index">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                        <input type="text" id="new-std-name" placeholder="Full Legal Name">
+                        <select id="new-std-level" onchange="adaptStreamDropdown(this.value, 'new-std-stream')">
+                            <option value="O-Level">O-Level (Lower Secondary)</option>
+                            <option value="A-Level">A-Level (Upper Advanced)</option>
+                        </select>
+                        <select id="new-std-stream">
+                            <option value="S.1">S.1</option>
+                            <option value="S.2">S.2</option>
+                            <option value="S.3">S.3</option>
+                            <option value="S.4">S.4</option>
+                        </select>
+                        <select id="new-std-sex"><option value="M">Male</option><option value="F">Female</option></select>
+                        <select id="new-std-status"><option value="Day">Day Scholar</option><option value="Hostel">Boarding Section</option></select>
+                        <input type="text" id="new-std-lin" placeholder="National LIN Number Reference">
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <button class="btn btn-primary" id="student-modal-commit-btn" onclick="commitManualStudentCreation()">Commit Record</button>
+                        <button class="btn btn-danger" onclick="toggleModal('add-student-modal', false)">Cancel</button>
+                    </div>
+                </div>
+
+                <table class="data-matrix">
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>National LIN</th>
+                            <th>Full Name</th>
+                            <th>Gender</th>
+                            <th>Class Level</th>
+                            <th>Configuration</th>
+                            <th>Management Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="registry-table-body"></tbody>
+                </table>
+            </div>
+
+            <!-- Shared View: Teacher Directory Modifiers -->
+            <div id="admin-staff-view" class="panel admin-panel dos-panel">
+                <h2 class="panel-title">
+                    <span>Institutional Faculty Assignment</span>
+                    <button class="btn btn-success" onclick="toggleModal('add-teacher-modal', true)">+ Add New Faculty Record</button>
+                </h2>
+
+                <div id="add-teacher-modal" style="display:none; background: #f1f5f9; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #cbd5e1;">
+                    <h3 id="teacher-modal-title">Add New Faculty Assignment</h3>
+                    <input type="hidden" id="edit-teacher-index">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                        <input type="text" id="new-tch-name" placeholder="Instructor Name">
+                        <input type="text" id="new-tch-role" placeholder="Administrative Core Responsibility">
+                        <input type="text" id="new-tch-subjects" placeholder="Specialized Curriculums Assigned (comma separated)">
+                        <input type="text" id="new-tch-classes" placeholder="Assigned Classes (comma separated)">
+                        <input type="email" id="new-tch-email" placeholder="Primary Contact Email Address">
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <button class="btn btn-primary" id="teacher-modal-commit-btn" onclick="commitTeacherCreation()">Commit Faculty Entry</button>
+                        <button class="btn btn-danger" onclick="toggleModal('add-teacher-modal', false)">Cancel</button>
+                    </div>
+                </div>
+
+                <table class="data-matrix">
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Instructor Name</th>
+                            <th>Core Responsibility</th>
+                            <th>Specialized Curriculums</th>
+                            <th>Assigned Classes</th>
+                            <th>Contact Link</th>
+                            <th>Management Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="faculty-table-body"></tbody>
+                </table>
+            </div>
+
+            <!-- Shared View: Report Compiler Engine Terminal -->
+            <div id="admin-report-generator" class="panel admin-panel dos-panel">
+                <h2 class="panel-title">Administrative Analytics & Student Performance Report Engine</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    <div style="background: #f1f5f9; padding: 20px; border-radius: 8px;">
+                        <div class="form-group">
+                            <label>Select Target Student Profile to Extract Report Summary:</label>
+                            <select id="admin-report-student-selector" onchange="renderAdminReportCardView()"></select>
+                        </div>
+                    </div>
+                    <div style="background: #ffe3e3; padding: 20px; border-radius: 8px; border: 1px solid #fca5a5;">
+                        <h4 style="margin-top:0; color:var(--danger)">Incoming Performance Feedback Logs</h4>
+                        <div id="admin-feedback-view-zone" style="max-height: 150px; overflow-y:auto; font-size:13px;"></div>
+                    </div>
+                </div>
+                <div class="printable-area" style="overflow-x: auto;">
+                    <div class="report-card-printout" id="admin-report-card-output-zone">
+                        <p style="text-align: center; color: gray;">Select a student tracking index loop from above to process localized analytics logs.</p>
+                    </div>
+                </div>
+                <button class="btn btn-accent" style="margin-top: 15px;" onclick="window.print()">Trigger High-Fidelity Print Run</button>
+            </div>
+
+            <!-- DOS Exclusive Undo Control Loop Interface -->
+            <div id="dos-undo-panel" class="panel dos-panel">
+                <h2 class="panel-title">DOS Executive Global Rollback Log Registry</h2>
+                <p>As Director of Studies, use the ledger array below to revert structural changes instantly.</p>
+                <table class="data-matrix">
+                    <thead>
+                        <tr>
+                            <th>Action Timestamp</th>
+                            <th>Operation Code Block Mutated</th>
+                            <th>Historical Integrity Content Log</th>
+                            <th>Rollback Execution Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dos-rollback-log-body"></tbody>
+                </table>
+            </div>
+
+            <!-- Faculty / Teacher Panel Views -->
+            <div id="teacher-grading-panel" class="panel teacher-panel">
+                <h2 class="panel-title">Centralized Class List Mark Matrix Entry Interface</h2>
+                <div style="display: flex; gap: 15px; margin-bottom: 20px; background: #f1f5f9; padding: 15px; border-radius: 6px;">
+                    <div class="form-group" style="margin:0;">
+                        <label>Select Assigned Class Context:</label>
+                        <select id="grade-filter-class" style="width: 200px;" onchange="populateTeacherSubjectDropdown()"></select>
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label>Select Assigned Subject Module:</label>
+                        <select id="grade-filter-subject" style="width: 250px;"></select>
+                    </div>
+                    <button class="btn btn-primary" style="align-self: flex-end;" onclick="generateDynamicGradingForm()">Load Target Assessment Matrix</button>
+                </div>
+                <div id="dynamic-grading-entry-grid"></div>
+            </div>
+
+            <!-- Student Virtual Desktop Workspace Panel View -->
+            <div id="student-desktop-panel" class="panel student-panel">
+                <h2 class="panel-title">Student Interactive Workspace & Personal Academic Log</h2>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 30px;">
+                    <div class="printable-area" style="overflow-x: auto;">
+                        <div class="report-card-printout" id="student-report-card-zone"></div>
+                    </div>
+                    <div style="background: #f1f5f9; padding: 20px; border-radius: 8px;">
+                        <h3>Report Verification Feedback Loop</h3>
+                        <p style="font-size:13px; color:#4a5568;">Notice an error? Report instantly to the DOS terminal here.</p>
+                        <div class="form-group">
+                            <label>Verification Status Message Feedback</label>
+                            <textarea id="student-feedback-text" rows="5" placeholder="State clearly the grading inconsistencies observed..."></textarea>
+                        </div>
+                        <button class="btn btn-danger" onclick="sendFeedbackToDos('Student')">Transmit Feedback to DOS</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parent Gateway Dashboard Panel View -->
+            <div id="parent-desktop-panel" class="panel parent-panel">
+                <h2 class="panel-title">Parent Gateway & Tracking Dashboard</h2>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 30px;">
+                    <div class="printable-area" style="overflow-x: auto;">
+                        <div class="report-card-printout" id="parent-report-card-zone"></div>
+                    </div>
+                    <div style="background: #f1f5f9; padding: 20px; border-radius: 8px;">
+                        <h3>Parent-to-Administration Feedback Module</h3>
+                        <p style="font-size:13px; color:#4a5568;">Submit queries directly to the school administration here.</p>
+                        <div class="form-group">
+                            <label>Parent Message Feedback</label>
+                            <textarea id="parent-feedback-text" rows="5" placeholder="Write feedback regarding performance validation..."></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="sendFeedbackToDos('Parent')">Submit Feedback to Admin</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Replaced Footer With Full Component From The Index Template File Layout -->
+    <footer>
+        <h2>Congress High School</h2>
+        <p>
+            P.O. Box 26935, Kampala, Uganda<br>
+            Tel: 0788772660 / 0700627960<br>
+            Location: 5 Miles Along Hoima Road, 100 Metres Off Nakibinge Stage
+        </p>
+        <br>
+        <p>
+            The school staff consists of qualified, experienced and well-trained professionals.
+            We provide safe drinking water, a standby generator, a conducive learning environment,
+            and train citizens of social value for the future.
+        </p>
+        <div class="footer-bottom">
+            <p>
+                ATYA OMUSANA<br>
+                &copy; 2026 Congress High School. All Rights Reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Supabase Production Cloud Database Core Engine Realtime Synchronization Wireup Hook -->
+    <script type="module">
+        // Replace parameters below with your explicit dashboard URL tracking variables if customized
+        const SUPABASE_REST_ENDPOINT = "https://congress-high-school-default.supabase.co/rest/v1/registry_state";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.your-placeholder-anon-key-here";
+
+        // Local Fallback Mock Data State Model Matrix
+        let CORE_APPLICATION_DATABASE_STATE = {
+            students: [
+                { id: "CHS/26/0101", lin: "LIN-9021-X1", name: "KIMBUGWE LANDSTON", sex: "M", class: "S.1", stream: "Core", section: "Hostel", approved: true, marks: { "Mathematics": { comp: 2.8, subj: 85 }, "English": { comp: 2.5, subj: 78 } } },
+                { id: "CHS/26/0102", lin: "LIN-4832-Y2", name: "LUBEGA GODFREY", sex: "M", class: "S.3", stream: "Core", section: "Hostel", approved: true, marks: { "Mathematics": { comp: 1.9, subj: 52 }, "Biology": { comp: 2.1, subj: 61 } } },
+                { id: "CHS/26/0103", lin: "LIN-5521-Z4", name: "NAMUBIRU SHARON", sex: "F", class: "S.5-Sciences", stream: "PCM/Sub", section: "Day", approved: true, marks: { "Mathematics": { subj: 74 }, "Physics": { subj: 65 }, "Chemistry": { subj: 58 }, "General Paper": { subj: 80 }, "Sub Computer": { subj: 88 } } }
+            ],
+            teachers: [
+                { id: "T2601", name: "NABADDA ZAMU", role: "Head Teacher", subjects: ["English", "History"], classes: ["S.1", "S.2", "S.3", "S.4"], email: "zamnabadda0@gmail.com" },
+                { id: "T2602", name: "SEMIGA RICHARD", role: "Director of Studies", subjects: ["Mathematics", "Physics"], classes: ["S.1", "S.3", "S.5-Sciences"], email: "semiggarichard@gmail.com" }
+            ],
+            credentials: {
+                admin: { user: "james", pass: "1234" },
+                dos: { user: "dos", pass: "5678" },
+                assigned: [
+                    { type: "teacher", targetId: "T2601", user: "zamu", pass: "pass1" },
+                    { type: "student", targetId: "CHS/26/0101", user: "landston", pass: "pass2" },
+                    { type: "parent", targetId: "CHS/26/0101", user: "parent1", pass: "pass3" }
+                ]
+            },
+            historyLog: [],
+            feedbacks: []
+        };
+
+        const CURRICULUM_DEFINITION = {
+            s1s2Subjects: ["English", "Mathematics", "Biology", "Chemistry", "Physics", "Geography", "History", "Religious Education", "Entrepreneurship", "Physical Education", "Kiswahili", "Computer Studies", "Fine Art", "Music", "Literature", "Local Language"],
+            s3s4Compulsory: ["English", "Mathematics", "Biology", "Chemistry", "Physics", "Geography", "History"],
+            s3s4Optionals: ["Entrepreneurship", "Computer Studies", "Fine Art", "Literature in English", "Agriculture", "French / Luganda"],
+            aLevelSciencePrincipals: ["Mathematics", "Physics", "Chemistry", "Biology"],
+            aLevelArtsPrincipals: ["History", "Geography", "Economics", "Literature in English", "Divinity"],
+            aLevelSubsidiaries: ["General Paper", "Sub Computer", "Sub Math"]
+        };
+
+        let CURRENT_ACTIVE_PORTAL = "admin";
+        let AUTHENTICATED_TARGET_ID = null; 
+
+        // Fetching initial persistent memory payload layers from cloud infrastructure
+        async function loadDataFromSupabaseStore() {
+            try {
+                const response = await fetch(`${SUPABASE_REST_ENDPOINT}?id=eq.1`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    if(data && data.length > 0 && data[0].state_blob) {
+                        CORE_APPLICATION_DATABASE_STATE = data[0].state_blob;
+                    }
+                }
+            } catch (err) {
+                console.warn("Supabase initialization read error context fallback triggered: ", err);
+            }
+            renderSystemDashboardContent();
+        }
+
+        async function pushStateToOnlineDatabase(logActionText = null) {
+            if (logActionText) {
+                if(!CORE_APPLICATION_DATABASE_STATE.historyLog) CORE_APPLICATION_DATABASE_STATE.historyLog = [];
+                CORE_APPLICATION_DATABASE_STATE.historyLog.push({
+                    timestamp: new Date().toLocaleTimeString() + " (" + new Date().toLocaleDateString() + ")",
+                    action: logActionText,
+                    backup: JSON.stringify({
+                        students: JSON.parse(JSON.stringify(CORE_APPLICATION_DATABASE_STATE.students)),
+                        teachers: JSON.parse(JSON.stringify(CORE_APPLICATION_DATABASE_STATE.teachers))
+                    })
+                });
+            }
+            
+            // Post payload mutation arrays upstream directly
+            try {
+                await fetch(`${SUPABASE_REST_ENDPOINT}?id=eq.1`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'resolution=merge-duplicates'
+                    },
+                    body: JSON.stringify({ id: 1, state_blob: CORE_APPLICATION_DATABASE_STATE })
+                });
+            } catch(e) {
+                console.error("Upstream synchronization packet dropped:", e);
+            }
+            renderSystemDashboardContent();
+        }
+
+        window.executeAuthenticationCheck = function() {
+            const user = document.getElementById('login-username').value.trim();
+            const pass = document.getElementById('login-password').value.trim();
+            const portal = document.getElementById('portal-selector').value;
+
+            let authorized = false;
+            AUTHENTICATED_TARGET_ID = null;
+
+            // Direct check for admin matching requirements
+            if (portal === "admin" && user === CORE_APPLICATION_DATABASE_STATE.credentials.admin.user && pass === CORE_APPLICATION_DATABASE_STATE.credentials.admin.pass) {
+                authorized = true;
+            } else if (portal === "dos" && user === CORE_APPLICATION_DATABASE_STATE.credentials.dos.user && pass === CORE_APPLICATION_DATABASE_STATE.credentials.dos.pass) {
+                authorized = true;
+            } else {
+                if(CORE_APPLICATION_DATABASE_STATE.credentials.assigned) {
+                    const matchedCred = CORE_APPLICATION_DATABASE_STATE.credentials.assigned.find(c => c.type === portal && c.user === user && c.pass === pass);
+                    if (matchedCred) {
+                        authorized = true;
+                        AUTHENTICATED_TARGET_ID = matchedCred.targetId;
+                    }
+                }
+            }
+
+            if (!authorized) {
+                document.getElementById('login-error').style.display = "block";
+                return;
+            }
+
+            document.getElementById('login-error').style.display = "none";
+            CURRENT_ACTIVE_PORTAL = portal;
+            document.getElementById('auth-overlay').style.display = 'none';
+            document.getElementById('app-container').style.display = 'block';
+            
+            initializeDynamicNavigation(portal);
+            renderSystemDashboardContent();
+        }
+
+        window.terminateSession = function() {
+            document.getElementById('app-container').style.display = 'none';
+            document.getElementById('auth-overlay').style.display = 'flex';
+            document.getElementById('login-username').value = '';
+            document.getElementById('login-password').value = '';
+        }
+
+        function initializeDynamicNavigation(portal) {
+            const nav = document.getElementById('dynamic-navigation-bar');
+            nav.innerHTML = '';
+            document.getElementById('current-user-display').innerText = portal.toUpperCase() + (AUTHENTICATED_TARGET_ID ? ` (${AUTHENTICATED_TARGET_ID})` : " Mode");
+
+            const links = {
+                admin: [
+                    { label: "Credentials Configuration", action: () => showPanel('admin-credentials-manager') },
+                    { label: "Student Master Registry", action: () => showPanel('admin-registrar-view') },
+                    { label: "Faculty Directory Map", action: () => showPanel('admin-staff-view') },
+                    { label: "Report Card Compiler", action: () => showPanel('admin-report-generator') }
+                ],
+                dos: [
+                    { label: "Credentials Configuration", action: () => showPanel('admin-credentials-manager') },
+                    { label: "Student Master Registry", action: () => showPanel('admin-registrar-view') },
+                    { label: "Faculty Directory Map", action: () => showPanel('admin-staff-view') },
+                    { label: "Report Card Compiler", action: () => showPanel('admin-report-generator') },
+                    { label: "Global Undo Rollbacks", action: () => showPanel('dos-undo-panel') }
+                ],
+                teacher: [
+                    { label: "Class List Mark Entry", action: () => showPanel('teacher-grading-panel') }
+                ],
+                student: [
+                    { label: "My Report Dashboard", action: () => showPanel('student-desktop-panel') }
+                ],
+                parent: [
+                    { label: "Child Progress Tracking", action: () => showPanel('parent-desktop-panel') }
+                ]
+            };
+
+            links[portal].forEach((lnk, idx) => {
+                const btn = document.createElement('button');
+                btn.innerText = lnk.label;
+                btn.onclick = () => {
+                    document.querySelectorAll('.portal-nav button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    lnk.action();
+                };
+                if(idx === 0) btn.classList.add('active');
+                nav.appendChild(btn);
+            });
+            
+            if(links[portal].length > 0) {
+                if(portal === 'admin' || portal === 'dos') showPanel('admin-credentials-manager');
+                if(portal === 'teacher') showPanel('teacher-grading-panel');
+                if(portal === 'student') showPanel('student-desktop-panel');
+                if(portal === 'parent') showPanel('parent-desktop-panel');
+            }
+        }
+
+        window.showPanel = function(panelId) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            const targetPanel = document.getElementById(panelId);
+            if(targetPanel) {
+                targetPanel.classList.add('active');
+            }
+            
+            if (panelId === 'teacher-grading-panel') setupTeacherWorkspace();
+            if (panelId === 'student-desktop-panel') renderTargetedReportView(AUTHENTICATED_TARGET_ID, 'student-report-card-zone');
+            if (panelId === 'parent-desktop-panel') renderTargetedReportView(AUTHENTICATED_TARGET_ID, 'parent-report-card-zone');
+        }
+
+        function renderSystemDashboardContent() {
+            renderStudentRegistry();
+            renderFacultyRegistry();
+            populateReportDropdowns();
+            renderRollbackLedger();
+            populateCredentialTargetDropdown();
+            renderCredentialsTable();
+            renderFeedbackLogsView();
+
+            document.getElementById('cfg-admin-user').value = CORE_APPLICATION_DATABASE_STATE.credentials.admin.user;
+            document.getElementById('cfg-admin-pass').value = CORE_APPLICATION_DATABASE_STATE.credentials.admin.pass;
+            document.getElementById('cfg-dos-user').value = CORE_APPLICATION_DATABASE_STATE.credentials.dos.user;
+            document.getElementById('cfg-dos-pass').value = CORE_APPLICATION_DATABASE_STATE.credentials.dos.pass;
+        }
+
+        window.populateCredentialTargetDropdown = function() {
+            const type = document.getElementById('cred-type-selector').value;
+            const targetSel = document.getElementById('cred-target-profile');
+            if(!targetSel) return;
+            targetSel.innerHTML = '';
+            
+            if (type === 'teacher') {
+                CORE_APPLICATION_DATABASE_STATE.teachers.forEach(t => {
+                    targetSel.options.add(new Option(`${t.name} (${t.id})`, t.id));
+                });
+            } else {
+                CORE_APPLICATION_DATABASE_STATE.students.forEach(s => {
+                    targetSel.options.add(new Option(`${s.name} (${s.id})`, s.id));
+                });
+            }
+        }
+
+        window.commitAssignedCredentials = function() {
+            const type = document.getElementById('cred-type-selector').value;
+            const targetId = document.getElementById('cred-target-profile').value;
+            const user = document.getElementById('cred-assigned-username').value.trim();
+            const pass = document.getElementById('cred-assigned-password').value.trim();
+
+            if (!user || !pass || !targetId) { alert("Invalid credentials payload mappings entries."); return; }
+
+            if(!CORE_APPLICATION_DATABASE_STATE.credentials.assigned) CORE_APPLICATION_DATABASE_STATE.credentials.assigned = [];
+            CORE_APPLICATION_DATABASE_STATE.credentials.assigned = CORE_APPLICATION_DATABASE_STATE.credentials.assigned.filter(c => !(c.type === type && c.targetId === targetId));
+
+            CORE_APPLICATION_DATABASE_STATE.credentials.assigned.push({ type, targetId, user, pass });
+            pushStateToOnlineDatabase(`Assigned portal credentials access mapping parameters for ${type}: ${targetId}`);
+            
+            document.getElementById('cred-assigned-username').value = '';
+            document.getElementById('cred-assigned-password').value = '';
+            alert("Credentials profile assignment saved successfully inside secure framework matrices.");
+        }
+
+        function renderCredentialsTable() {
+            const tbody = document.getElementById('credentials-assigned-table-body');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+            if(!CORE_APPLICATION_DATABASE_STATE.credentials.assigned || CORE_APPLICATION_DATABASE_STATE.credentials.assigned.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; font-style:italic; color:gray;">No custom assigned portal credentials found.</td></tr>`;
+                return;
+            }
+            CORE_APPLICATION_DATABASE_STATE.credentials.assigned.forEach(c => {
+                let nameLookup = c.targetId;
+                if(c.type === 'teacher') {
+                    const t = CORE_APPLICATION_DATABASE_STATE.teachers.find(x => x.id === c.targetId);
+                    if(t) nameLookup = t.name;
+                } else {
+                    const s = CORE_APPLICATION_DATABASE_STATE.students.find(x => x.id === c.targetId);
+                    if(s) nameLookup = s.name;
+                }
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><span class="btn btn-primary" style="padding:2px 8px; font-size:11px;">${c.type.toUpperCase()}</span></td>
+                    <td><strong>${nameLookup}</strong> (<code>${c.targetId}</code>)</td>
+                    <td><code>${c.user}</code></td>
+                    <td><span style="color:var(--success); font-weight:600;">✓ Encrypted Map Loaded</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function setupTeacherWorkspace() {
+            const tProfile = CORE_APPLICATION_DATABASE_STATE.teachers.find(t => t.id === AUTHENTICATED_TARGET_ID);
+            const classSelector = document.getElementById('grade-filter-class');
+            if(!classSelector) return;
+            classSelector.innerHTML = '';
+
+            if (!tProfile) {
+                classSelector.options.add(new Option("No classes assigned. Account unmapped.", ""));
+                return;
+            }
+            tProfile.classes.forEach(c => {
+                classSelector.options.add(new Option(`${c} Module Assessment Matrix`, c));
+            });
+            populateTeacherSubjectDropdown();
+        }
+
+        window.populateTeacherSubjectDropdown = function() {
+            const classVal = document.getElementById('grade-filter-class').value;
+            const subSelector = document.getElementById('grade-filter-subject');
+            if(!subSelector) return;
+            subSelector.innerHTML = '';
+            const tProfile = CORE_APPLICATION_DATABASE_STATE.teachers.find(t => t.id === AUTHENTICATED_TARGET_ID);
+            
+            if(!tProfile) return;
+            tProfile.subjects.forEach(sub => {
+                subSelector.options.add(new Option(sub, sub));
+            });
+        }
+
+        window.generateDynamicGradingForm = function() {
+            const targetClass = document.getElementById('grade-filter-class').value;
+            const targetSubject = document.getElementById('grade-filter-subject').value;
+            const zone = document.getElementById('dynamic-grading-entry-grid');
+            if(!zone) return;
+            zone.innerHTML = '';
+
+            if(!targetClass || !targetSubject) return;
+
+            const activeClassStudents = CORE_APPLICATION_DATABASE_STATE.students.filter(s => targetClass.includes(s.class) || (s.class === "S.3" && targetClass === "S.3") || (s.class === "S.4" && targetClass === "S.4"));
+            const isOLevel = targetClass.startsWith("S.1") || targetClass.startsWith("S.2") || targetClass.startsWith("S.3") || targetClass.startsWith("S.4");
+
+            if(activeClassStudents.length === 0) {
+                zone.innerHTML = `<p style="color:var(--danger);">No active records detected matching context class parameters: ${targetClass}</p>`;
+                return;
+            }
+
+            let html = `<h4>Assigned Assessment Target Matrix Module: <span style="color:var(--secondary)">${targetSubject} for ${targetClass}</span></h4>`;
+            html += `<table class="data-matrix"><thead><tr><th>Student Name Track Profile</th>`;
+            if (isOLevel) {
+                html += `<th>Competences Activity Score (0.0 - 3.0)</th>`;
+            }
+            html += `<th>Subject Achievements Formative Score (0 - 100%)</th></tr></thead><tbody>`;
+
+            activeClassStudents.forEach(st => {
+                const currentData = st.marks && st.marks[targetSubject] ? st.marks[targetSubject] : { comp: '', subj: '' };
+                html += `<tr><td><strong>${st.name}</strong><br><small>ID Reference Key: ${st.id}</small></td>`;
+                if(isOLevel) {
+                    html += `<td><input type="number" step="0.1" min="0" max="3" style="width:100px; padding:6px;" value="${currentData.comp || ''}" onchange="updateCellScoreMatrix('${st.id}', '${targetSubject}', 'comp', this.value)"></td>`;
+                }
+                html += `<td><input type="number" min="0" max="100" style="width:100px; padding:6px;" value="${currentData.subj || ''}" onchange="updateCellScoreMatrix('${st.id}', '${targetSubject}', 'subj', this.value)"></td></tr>`;
+            });
+            html += `</tbody></table>`;
+            zone.innerHTML = html;
+        }
+
+        window.updateCellScoreMatrix = function(studentId, subject, field, value) {
+            const target = CORE_APPLICATION_DATABASE_STATE.students.find(s => s.id === studentId);
+            if(target) {
+                if(!target.marks) target.marks = {};
+                if(!target.marks[subject]) target.marks[subject] = { comp: '', subj: '' };
+                target.marks[subject][field] = parseFloat(value) || 0;
+                pushStateToOnlineDatabase();
+            }
+        }
+
+        window.sendFeedbackToDos = function(roleType) {
+            const feedbackText = document.getElementById(roleType.toLowerCase() + '-feedback-text').value.trim();
+            if(!feedbackText) { alert("Feedback entry cannot be empty matrix layer."); return; }
+
+            if(!CORE_APPLICATION_DATABASE_STATE.feedbacks) CORE_APPLICATION_DATABASE_STATE.feedbacks = [];
+            CORE_APPLICATION_DATABASE_STATE.feedbacks.push({
+                sender: roleType + ` Assignment Node Profile Holder (${AUTHENTICATED_TARGET_ID || 'Custom Key'})`,
+                timestamp: new Date().toLocaleTimeString(),
+                message: feedbackText
+            });
+            pushStateToOnlineDatabase();
+            document.getElementById(roleType.toLowerCase() + '-feedback-text').value = '';
+            alert("Your response validation message payload successfully sent into central system directory analytics log.");
+        }
+
+        function renderFeedbackLogsView() {
+            const container = document.getElementById('admin-feedback-view-zone');
+            if(!container) return;
+            container.innerHTML = '';
+            if(!CORE_APPLICATION_DATABASE_STATE.feedbacks || CORE_APPLICATION_DATABASE_STATE.feedbacks.length === 0) {
+                container.innerHTML = `<p style="color:gray; font-style:italic;">No responses uploaded from parents or students inside storage context.</p>`;
+                return;
+            }
+            CORE_APPLICATION_DATABASE_STATE.feedbacks.forEach(f => {
+                container.innerHTML += `<div style="background:white; padding:10px; border-radius:4px; margin-bottom:8px; border-left:4px solid var(--danger)">
+                    <strong>${f.sender}</strong> <small style="color:gray">${f.timestamp}</small><br>
+                    <span>${f.message}</span>
+                </div>`;
+            });
+        }
+
+        function populateReportDropdowns() {
+            const adminSel = document.getElementById('admin-report-student-selector');
+            if(!adminSel) return;
+            adminSel.innerHTML = '<option value="">-- Choose Profile to Process Data --</option>';
+            CORE_APPLICATION_DATABASE_STATE.students.forEach(s => {
+                adminSel.options.add(new Option(`${s.name} (${s.id})`, s.id));
+            });
+        }
+
+        window.renderAdminReportCardView = function() {
+            renderTargetedReportView(document.getElementById('admin-report-student-selector').value, 'admin-report-card-output-zone');
+        }
+
+        function renderTargetedReportView(targetId, renderOutputZoneId) {
+            const zone = document.getElementById(renderOutputZoneId);
+            if(!zone) return;
+            if(!targetId) { zone.innerHTML = '<p style="color:gray; text-align:center;">No tracking profile target index selected context loop pipeline.</p>'; return; }
+            
+            const s = CORE_APPLICATION_DATABASE_STATE.students.find(st => st.id === targetId);
+            if(!s) return;
+
+            let structuralLevel = "O-Level";
+            let subjectArr = [];
+
+            if (s.class === "S.1" || s.class === "S.2") {
+                structuralLevel = "O-Level (S.1-S.2 NLSC Framework Matrix: 16 Subjects)";
+                subjectArr = CURRICULUM_DEFINITION.s1s2Subjects;
+            } else if (s.class === "S.3" || s.class === "S.4") {
+                structuralLevel = "O-Level (S.3-S.4 NLSC Framework Matrix: 7 Compulsory + 2 Options)";
+                subjectArr = [...CURRICULUM_DEFINITION.s3s4Compulsory, ...CURRICULUM_DEFINITION.s3s4Optionals.slice(0, 2)];
+            } else {
+                structuralLevel = "A-Level Framework standard Matrix (3 Principals + GP + 1 Subsidiary)";
+                subjectArr = [...CURRICULUM_DEFINITION.aLevelSciencePrincipals.slice(0, 3), "General Paper", "Sub Computer"];
+            }
+
+            let html = `
+                <div class="report-header-flex">
+                    <img src="BADGE.png" alt="Congress High School Badge">
+                    <div class="report-header-text">
+                        <h2 style="margin:0; font-size:28px; letter-spacing:1px; color:#0a2540;">CONGRESS HIGH SCHOOL KATENDE</h2>
+                        <p style="margin:4px 0; font-style:italic; font-weight:600; color:#4b0082;">"atya omusana"</p>
+                        <h4 style="margin:10px 0 0 0; border:2px solid #000; padding:4px 10px; display:inline-block; background:#f1f5f9;">OFFICIAL PERFORMANCE TERMINAL REPORT CARD</h4>
+                    </div>
+                    <div style="width:120px; height:120px; border:1px dashed #ccc; display:flex; justify-content:center; align-items:center; font-size:11px; text-align:center;">Student Passport Photograph</div>
+                </div>
+                <table style="width:100%; font-size:14px; margin-bottom:20px; line-height:1.6;" border="0">
+                    <tr><td><strong>STUDENT NAME:</strong> ${s.name}</td><td><strong>ID NUMBER:</strong> <code>${s.id}</code></td></tr>
+                    <tr><td><strong>CLASS LEVEL LEVEL:</strong> ${s.class} (${s.stream})</td><td><strong>NATIONAL LIN:</strong> ${s.lin}</td></tr>
+                    <tr><td><strong>CURRICULUM STANDARDS:</strong> ${structuralLevel}</td><td><strong>ACADEMIC YEAR:</strong> 2026</td></tr>
+                </table>
+                <table style="width:100%; border-collapse:collapse; font-size:13px;" border="1" cellpadding="8">
+                    <thead style="background-color:#f1f5f9;">
+                        <tr>
+                            <th>Subject Module Domain Title</th>
+                            ${s.class.startsWith("S.5") || s.class.startsWith("S.6") ? '' : '<th>Competence Activity Rating (0.0-3.0)</th>'}
+                            <th>Subject Achievement (100%)</th>
+                            <th>NLSC / UNEB Assessment Grade Descriptor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            subjectArr.forEach(sub => {
+                const marksNode = s.marks && s.marks[sub] ? s.marks[sub] : { comp: '-', subj: '-' };
+                let gradeStr = "F9";
+                
+                if (s.class.startsWith("S.5") || s.class.startsWith("S.6")) {
+                    if (sub === "General Paper" || sub.startsWith("Sub")) {
+                        gradeStr = (marksNode.subj >= 40) ? "Subsidiary Pass (O)" : "F";
+                    } else {
+                        if(marksNode.subj >= 70) gradeStr = "A [Principal Pass]";
+                        else if(marksNode.subj >= 60) gradeStr = "B [Principal Pass]";
+                        else if(marksNode.subj >= 50) gradeStr = "C [Principal Pass]";
+                        else if(marksNode.subj >= 45) gradeStr = "D [Principal Pass]";
+                        else if(marksNode.subj >= 40) gradeStr = "E [Principal Pass]";
+                        else if(marksNode.subj >= 35) gradeStr = "O [Subsidiary Pass]";
+                        else gradeStr = "F [Fail]";
+                    }
+                } else {
+                    const rawScore = marksNode.subj;
+                    if(rawScore >= 80) gradeStr = "D1 (Excellent)";
+                    else if(rawScore >= 75) gradeStr = "D2";
+                    else if(rawScore >= 66) gradeStr = "C3 (Credit)";
+                    else if(rawScore >= 60) gradeStr = "C4";
+                    else if(rawScore >= 55) gradeStr = "C5";
+                    else if(rawScore >= 50) gradeStr = "C6";
+                    else if(rawScore >= 45) gradeStr = "P7 (Pass)";
+                    else if(rawScore >= 40) gradeStr = "P8";
+                    else if(rawScore === '-') gradeStr = "-";
+                    else gradeStr = "F9 (Fail Score)";
+                }
+
+                html += `
+                    <tr>
+                        <td><strong>${sub}</strong></td>
+                        ${s.class.startsWith("S.5") || s.class.startsWith("S.6") ? '' : `<td><center><strong>${marksNode.comp}</strong></center></td>`}
+                        <td><center>${marksNode.subj}</center></td>
+                        <td><center><strong>${gradeStr}</strong></center></td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+                <div style="margin-top:30px; display:grid; grid-template-columns:1fr 1fr; gap:40px; font-size:13px;">
+                    <div>
+                        <p><strong>Class Teacher Remarks:</strong> Focus on refining technical competences inside laboratory assignments modules.</p>
+                        <p>Signature: ............................................................</p>
+                    </div>
+                    <div style="text-align:right;">
+                        <p><strong>Director of Studies Verification Stamp:</strong> Validated Integrity Structure State</p>
+                        <p>Signature: ............................................................</p>
+                    </div>
+                </div>
+            `;
+            zone.innerHTML = html;
+        }
+
+        function renderStudentRegistry() {
+            const tbody = document.getElementById('registry-table-body');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+            CORE_APPLICATION_DATABASE_STATE.students.forEach((s, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><code>${s.id}</code></td>
+                    <td>${s.lin}</td>
+                    <td><strong>${s.name}</strong></td>
+                    <td>${s.sex}</td>
+                    <td>${s.class} (${s.stream})</td>
+                    <td>${s.section}</td>
+                    <td>
+                        <button class="btn btn-warning" style="padding: 4px 8px; font-size:12px;" onclick="triggerEditStudent(${idx})">Edit</button>
+                        <button class="btn btn-danger" style="padding: 4px 8px; font-size:12px;" onclick="triggerDeleteStudent(${idx})">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.toggleModal = function(id, show) {
+            const modal = document.getElementById(id);
+            if(!modal) return;
+            modal.style.display = show ? 'block' : 'none';
+            if(!show) {
+                document.getElementById('edit-student-index').value = "";
+                document.getElementById('student-modal-title').innerText = "Add Student Record Manually";
+                document.getElementById('new-std-name').value = "";
+                document.getElementById('new-std-lin').value = "";
+            }
+        }
+
+        window.commitManualStudentCreation = function() {
+            const name = document.getElementById('new-std-name').value.toUpperCase();
+            const lvl = document.getElementById('new-std-level').value;
+            const clsStream = document.getElementById('new-std-stream').value;
+            const sex = document.getElementById('new-std-sex').value;
+            const section = document.getElementById('new-std-status').value;
+            const lin = document.getElementById('new-std-lin').value || "LIN-ASSIGNED";
+            const editIdx = document.getElementById('edit-student-index').value;
+
+            if(!name) { alert("Legal name configuration invalid."); return; }
+
+            if(editIdx !== "") {
+                const i = parseInt(editIdx);
+                CORE_APPLICATION_DATABASE_STATE.students[i].name = name;
+                CORE_APPLICATION_DATABASE_STATE.students[i].class = clsStream.split('-')[0];
+                CORE_APPLICATION_DATABASE_STATE.students[i].stream = clsStream.split('-')[1] || "Core";
+                CORE_APPLICATION_DATABASE_STATE.students[i].sex = sex;
+                CORE_APPLICATION_DATABASE_STATE.students[i].section = section;
+                CORE_APPLICATION_DATABASE_STATE.students[i].lin = lin;
+                pushStateToOnlineDatabase(`Modified student entity record schema: ${CORE_APPLICATION_DATABASE_STATE.students[i].id}`);
+            } else {
+                const generatedId = "CHS/26/0" + (CORE_APPLICATION_DATABASE_STATE.students.length + 101);
+                CORE_APPLICATION_DATABASE_STATE.students.push({
+                    id: generatedId, lin, name, sex, class: clsStream.split('-')[0], stream: clsStream.split('-')[1] || "Core", section, approved: true, marks: {}
+                });
+                pushStateToOnlineDatabase(`Created new operational student tracking entity: ${generatedId}`);
+            }
+            toggleModal('add-student-modal', false);
+        }
+
+        window.triggerEditStudent = function(idx) {
+            const s = CORE_APPLICATION_DATABASE_STATE.students[idx];
+            document.getElementById('edit-student-index').value = idx;
+            document.getElementById('new-std-name').value = s.name;
+            document.getElementById('new-std-lin').value = s.lin;
+            document.getElementById('student-modal-title').innerText = `Edit Profile Array: ${s.id}`;
+            toggleModal('add-student-modal', true);
+        }
+
+        window.triggerDeleteStudent = function(idx) {
+            if(confirm(`Purge profile entity ${CORE_APPLICATION_DATABASE_STATE.students[idx].id} out of memory matrix tables completely?`)) {
+                const targetId = CORE_APPLICATION_DATABASE_STATE.students[idx].id;
+                CORE_APPLICATION_DATABASE_STATE.students.splice(idx, 1);
+                pushStateToOnlineDatabase(`Purged student entity matching key identifier: ${targetId}`);
+            }
+        }
+
+        function renderFacultyRegistry() {
+            const tbody = document.getElementById('faculty-table-body');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+            CORE_APPLICATION_DATABASE_STATE.teachers.forEach((t, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><code>${t.id}</code></td>
+                    <td><strong>${t.name}</strong></td>
+                    <td><i>${t.role}</i></td>
+                    <td>${t.subjects.map(sub => `<span style="background:#f1f5f9; border:1px solid #cbd5e1; padding:2px 6px; margin:2px; display:inline-block; font-size:12px; border-radius:3px;">${sub}</span>`).join('')}</td>
+                    <td>${t.classes ? t.classes.join(', ') : 'None'}</td>
+                    <td><a href="mailto:${t.email}">${t.email}</a></td>
+                    <td>
+                        <button class="btn btn-warning" style="padding: 4px 8px; font-size:12px;" onclick="triggerEditTeacher(${idx})">Edit</button>
+                        <button class="btn btn-danger" style="padding: 4px 8px; font-size:12px;" onclick="triggerDeleteTeacher(${idx})">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.commitTeacherCreation = function() {
+            const name = document.getElementById('new-tch-name').value.toUpperCase();
+            const role = document.getElementById('new-tch-role').value;
+            const subs = document.getElementById('new-tch-subjects').value.split(',').map(x => x.trim());
+            const clss = document.getElementById('new-tch-classes').value.split(',').map(x => x.trim());
+            const email = document.getElementById('new-tch-email').value;
+            const editIdx = document.getElementById('edit-teacher-index').value;
+
+            if(!name || !email) { alert("Faculty payload missing required criteria metrics."); return; }
+
+            if(editIdx !== "") {
+                const i = parseInt(editIdx);
+                CORE_APPLICATION_DATABASE_STATE.teachers[i].name = name;
+                CORE_APPLICATION_DATABASE_STATE.teachers[i].role = role;
+                CORE_APPLICATION_DATABASE_STATE.teachers[i].subjects = subs;
+                CORE_APPLICATION_DATABASE_STATE.teachers[i].classes = clss;
+                CORE_APPLICATION_DATABASE_STATE.teachers[i].email = email;
+                pushStateToOnlineDatabase(`Modified instructor entity record data map: ${CORE_APPLICATION_DATABASE_STATE.teachers[i].id}`);
+            } else {
+                const generatedId = "T26" + (CORE_APPLICATION_DATABASE_STATE.teachers.length + 11);
+                CORE_APPLICATION_DATABASE_STATE.teachers.push({ id: generatedId, name, role, subjects: subs, classes: clss, email });
+                pushStateToOnlineDatabase(`Enrolled new institutional faculty registry node: ${generatedId}`);
+            }
+            toggleModal('add-teacher-modal', false);
+        }
+
+        window.triggerEditTeacher = function(idx) {
+            const t = CORE_APPLICATION_DATABASE_STATE.teachers[idx];
+            document.getElementById('edit-teacher-index').value = idx;
+            document.getElementById('new-tch-name').value = t.name;
+            document.getElementById('new-tch-role').value = t.role;
+            document.getElementById('new-tch-subjects').value = t.subjects.join(', ');
+            document.getElementById('new-tch-classes').value = t.classes ? t.classes.join(', ') : '';
+            document.getElementById('new-tch-email').value = t.email;
+            toggleModal('add-teacher-modal', true);
+        }
+
+        window.triggerDeleteTeacher = function(idx) {
+            if(confirm(`Purge instructor node assignments map profile: ${CORE_APPLICATION_DATABASE_STATE.teachers[idx].id}?`)) {
+                const targetId = CORE_APPLICATION_DATABASE_STATE.teachers[idx].id;
+                CORE_APPLICATION_DATABASE_STATE.teachers.splice(idx, 1);
+                pushStateToOnlineDatabase(`Purged instructor entity node assignment loop matching: ${targetId}`);
+            }
+        }
+
+        window.updateSystemPasskeys = function(type) {
+            if(type === 'admin') {
+                CORE_APPLICATION_DATABASE_STATE.credentials.admin.user = document.getElementById('cfg-admin-user').value;
+                CORE_APPLICATION_DATABASE_STATE.credentials.admin.pass = document.getElementById('cfg-admin-pass').value;
+            } else {
+                CORE_APPLICATION_DATABASE_STATE.credentials.dos.user = document.getElementById('cfg-dos-user').value;
+                CORE_APPLICATION_DATABASE_STATE.credentials.dos.pass = document.getElementById('cfg-dos-pass').value;
+            }
+            pushStateToOnlineDatabase(`Reconfigured security key parameter matrix components tracking route mappings for: ${type}`);
+            alert(`Security passkey configurations updating routing arrays saved.`);
+        }
+
+        function renderRollbackLedger() {
+            const tbody = document.getElementById('dos-rollback-log-body');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+            if(!CORE_APPLICATION_DATABASE_STATE.historyLog || CORE_APPLICATION_DATABASE_STATE.historyLog.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; font-style:italic; padding:20px;">System state tracker registry trace logs blank. No recorded rollback configurations found.</td></tr>`;
+                return;
+            }
+            CORE_APPLICATION_DATABASE_STATE.historyLog.forEach((log, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><small>${log.timestamp}</small></td>
+                    <td><b style="color:var(--primary);">${log.action}</b></td>
+                    <td><code style="font-size:11px;">Integrity Verification Backup Frame Matrix Active</code></td>
+                    <td><button class="btn btn-danger" style="padding:4px 8px; font-size:12px;" onclick="executeHistoricalRollback(${idx})">Undo Operation Block Changes</button></td>
+                `;
+                tbody.insertBefore(tr, tbody.firstChild);
+            });
+        }
+
+        window.executeHistoricalRollback = function(idx) {
+            if(confirm("Rollback snapshot?")) {
+                const snapshotData = JSON.parse(CORE_APPLICATION_DATABASE_STATE.historyLog[idx].backup);
+                CORE_APPLICATION_DATABASE_STATE.students = snapshotData.students;
+                CORE_APPLICATION_DATABASE_STATE.teachers = snapshotData.teachers;
+                CORE_APPLICATION_DATABASE_STATE.historyLog.splice(idx, 1);
+                pushStateToOnlineDatabase();
+            }
+        }
+
+        window.adaptStreamDropdown = function(val, targetElementId) {
+            const select = document.getElementById(targetElementId);
+            if(!select) return;
+            select.innerHTML = '';
+            if(val === "O-Level") { ["S.1", "S.2", "S.3", "S.4"].forEach(c => select.options.add(new Option(c, c))); } 
+            else { ["S.5-Sciences", "S.5-Arts", "S.6-Sciences", "S.6-Arts"].forEach(c => select.options.add(new Option(c, c))); }
+        }
+
+        // Initialize state engine on load loop from external service layers
+        window.onload = () => { 
+            if(document.getElementById('new-std-stream')) adaptStreamDropdown("O-Level", "new-std-stream");
+            loadDataFromSupabaseStore();
+        };
+    </script>
+</body>
+</html>
