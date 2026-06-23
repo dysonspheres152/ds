@@ -3,10 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Management Information System - CHS | SSEMUWEMBA HENRY JAMES</title>
+    <title>Portal Management System - Congress High School</title>
+    
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="badge.png">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         :root {
             --primary: #0f172a;
@@ -39,6 +46,64 @@
             flex-direction: column;
         }
 
+        /* --- INDEX NAVIGATION BAR --- */
+        nav.index-nav {
+            background: linear-gradient(90deg, #0f172a, #2563eb, #10b981);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.15);
+            backdrop-filter: blur(5px);
+        }
+
+        nav.index-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            transition: .3s ease;
+            position: relative;
+            padding-bottom: 4px;
+            cursor: pointer;
+        }
+
+        nav.index-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #fde047;
+            transition: width 0.3s ease;
+        }
+
+        nav.index-nav a:hover::after {
+            width: 100%;
+        }
+
+        nav.index-nav a:hover {
+            color: #fde047;
+        }
+
+        .menu-toggle {
+            display: none;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 24px;
+            padding: 5px 10px;
+            border: 2px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
         /* Processing Loader Overlay */
         #proccesor {
             position: fixed;
@@ -65,71 +130,27 @@
         }
         #text { font-weight: 600; color: var(--primary); font-size: 0.95rem; }
 
-        /* Public Header Navigation Bar (from index.html) */
-        .public-nav {
-            background: linear-gradient(90deg, #0f172a, #2563eb, #10b981);
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 35px;
-            flex-wrap: wrap;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.15);
-        }
-        .public-nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            letter-spacing: 0.5px;
-            transition: .3s ease;
-            position: relative;
-            padding-bottom: 4px;
-            cursor: pointer;
-        }
-        .public-nav a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0; left: 0;
-            background-color: #fde047;
-            transition: width 0.3s ease;
-        }
-        .public-nav a:hover::after { width: 100%; }
-        .public-nav a:hover, .public-nav a.active-link { color: #fde047; }
-        
-        .public-nav .menu-toggle-btn {
-            display: none;
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        /* Firewall Access Gate Screen */
-        #auth-gate {
-            padding: 60px 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        /* Secure Login Gateway Card Container */
+        #auth-gate-container {
+            max-width: 460px;
+            width: 90%;
+            margin: 60px auto;
             flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .auth-card {
             background: white;
             padding: 40px;
             border-radius: 25px;
-            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.06);
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
             width: 100%;
-            max-width: 450px;
             text-align: center;
-            border-top: 8px solid #10b981;
+            border-top: 8px solid #2563eb;
         }
         .auth-card h2 { 
-            color: var(--secondary); 
+            color: var(--primary); 
             margin-bottom: 6px; 
             font-weight: 700;
             font-size: 1.6rem;
@@ -140,29 +161,32 @@
             font-size: 0.85rem; 
             margin-bottom: 25px; 
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             font-weight: 600;
         }
 
-        /* Core Application Layout Wrapper */
-        #portal-app-layout {
+        /* Main Workspace Panel System */
+        #portal-workspace {
             display: none;
-            flex-direction: column;
+            max-width: 1300px;
+            margin: 35px auto;
+            width: 90%;
             flex-grow: 1;
         }
 
-        /* Header Identity Matrix */
+        /* Identity Matrix Header Inside System */
         #top {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             color: white;
-            padding: 20px 40px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 24px 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
         }
         .header-layout {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 15px;
             gap: 20px;
         }
         #logo img {
@@ -180,7 +204,6 @@
             font-weight: 700;
             letter-spacing: 0.5px;
             display: block;
-            color: #ffffff;
         }
         .motto {
             font-size: 0.9rem;
@@ -192,66 +215,47 @@
         .welcome-msg {
             text-align: center;
             background: rgba(255, 255, 255, 0.06);
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
             font-size: 0.9rem;
-            margin-bottom: 20px;
+            margin-top: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #e2e8f0;
         }
         .welcome-msg font { color: var(--accent); font-weight: 600; }
 
-        /* Portal Navigation Menu Bar */
-        .nav-container { position: relative; }
-        .inner-menu-toggle {
-            display: none;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            text-align: center;
-            font-size: 0.95rem;
-        }
-        .portal-nav-bar {
+        /* Internal Portal Navigation Link System */
+        nav.portal-nav {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
             justify-content: center;
+            margin-top: 15px;
+            background: rgba(0,0,0,0.2);
+            padding: 8px;
+            border-radius: 10px;
         }
-        .portal-nav-bar a {
+        nav.portal-nav a {
             color: #cbd5e1;
             text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 0.9rem;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 0.88rem;
             font-weight: 500;
-            background: rgba(255, 255, 255, 0.05);
             transition: all 0.2s ease;
             cursor: pointer;
         }
-        .portal-nav-bar a:hover {
-            background: rgba(255, 255, 255, 0.12);
+        nav.portal-nav a:hover {
+            background: rgba(255, 255, 255, 0.1);
             color: #ffffff;
         }
-        .portal-nav-bar a.active {
+        nav.portal-nav a.active {
             background: var(--secondary);
             color: white;
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
 
         /* Layout Framework Split Grid */
-        #main { 
-            max-width: 1440px; 
-            margin: 30px auto; 
-            width: 100%;
-            padding: 0 30px;
-            flex-grow: 1;
-        }
         .workspace-grid {
             display: grid;
             grid-template-columns: 280px 1fr;
@@ -262,8 +266,8 @@
         #snavs {
             background: white;
             padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.05);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
             border: 1px solid var(--border-color);
             align-self: start;
         }
@@ -304,45 +308,36 @@
         /* Core Panel Workspace */
         #main-content {
             background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.05);
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
             border: 1px solid var(--border-color);
             min-height: 550px;
         }
         .portal-panel { display: none; }
 
         /* Typography & Headings */
-        h2 {
-            font-size: 1.4rem;
-            color: var(--primary);
-            font-weight: 700;
-            margin-bottom: 20px;
-            letter-spacing: -0.5px;
-        }
-        h3 {
-            font-size: 1.15rem;
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
+        h2 { font-size: 1.4rem; color: var(--primary); font-weight: 700; margin-bottom: 20px; letter-spacing: -0.5px; }
+        h3 { font-size: 1.15rem; color: var(--primary); font-weight: 600; margin-bottom: 15px; }
 
         /* Forms, Fields and Tables Layouts */
         fieldset {
             border: 1px solid var(--border-color);
             padding: 24px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-bottom: 25px;
             background: var(--bg-light);
         }
         legend {
             font-weight: 600;
-            font-size: 0.9rem;
-            padding: 0 12px;
+            font-size: 0.85rem;
+            padding: 4px 14px;
             color: var(--primary);
             background: white;
             border: 1px solid var(--border-color);
             border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .form-row {
             display: flex;
@@ -359,7 +354,7 @@
         }
         label { font-size: 0.8rem; font-weight: 600; margin-bottom: 6px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
         input, select, textarea {
-            padding: 10px 14px;
+            padding: 11px 14px;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
             font-size: 0.9rem;
@@ -377,7 +372,7 @@
             background: var(--secondary);
             color: white;
             border: none;
-            padding: 11px 20px;
+            padding: 12px 22px;
             font-weight: 600;
             font-size: 0.9rem;
             border-radius: 8px;
@@ -395,7 +390,7 @@
             overflow-x: auto;
             margin-top: 15px;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 12px;
         }
 
         table.data-table {
@@ -423,7 +418,7 @@
         .badge-green { background: #d1fae5; color: #065f46; padding: 4px 8px; border-radius: 6px; font-weight: 600; font-size: 0.78rem; text-decoration: none; display: inline-block;}
         .badge-red { background: #fee2e2; color: #b91c1c; padding: 4px 8px; border-radius: 6px; font-weight: 600; font-size: 0.78rem; text-decoration: none; display: inline-block;}
 
-        /* Footer Custom Integration (from index.html style block) */
+        /* --- INDEX FOOTER --- */
         footer {
             background: linear-gradient(135deg, #0f172a, #1e3a8a, #064e3b);
             color: white;
@@ -431,55 +426,24 @@
             margin-top: auto;
             text-align: center;
         }
-        footer h2 {
-            margin-bottom: 20px;
-            color: #fde047;
-            font-size: 2rem;
-            letter-spacing: 1px;
-        }
-        footer p {
-            line-height: 2;
-            font-size: 16px;
-            opacity: 0.9;
-        }
-        .footer-bottom {
-            margin-top: 35px;
-            padding-top: 25px;
-            border-top: 1px solid rgba(255,255,255,.15);
-        }
+        footer h2 { margin-bottom: 20px; color: #fde047; font-size: 2rem; letter-spacing: 1px; }
+        footer p { line-height: 2; font-size: 16px; opacity: 0.9; }
+        .footer-bottom { margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,.15); }
 
         /* Responsive Breakpoints */
         @media(max-width: 992px) {
             .workspace-grid { grid-template-columns: 1fr; gap: 20px; }
-            #top { padding: 20px; }
-            .header-layout { flex-direction: column; text-align: center; }
-            .inner-menu-toggle { display: block; margin-bottom: 10px; }
-            .portal-nav-bar {
-                display: none;
-                flex-direction: column;
-                background: #1e293b;
-                padding: 10px;
-                border-radius: 8px;
-                position: absolute;
-                width: 100%;
-                z-index: 100;
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-            }
-            .portal-nav-bar.show { display: flex; }
-            .portal-nav-bar a { width: 100%; text-align: center; }
-        }
-
-        @media(max-width: 768px) {
-            .public-nav { flex-direction: column; align-items: center; gap: 10px; }
-            .public-nav .menu-toggle-btn { display: block; }
-            .public-nav a { display: none; width: 100%; text-align: center; padding: 8px 0; }
-            .public-nav.mobile-expanded a { display: block; }
+            nav.index-nav { flex-direction: column; align-items: center; gap: 0; padding: 10px 20px; }
+            .menu-toggle { display: block; margin-bottom: 5px; }
+            nav.index-nav a { display: none; width: 100%; text-align: center; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+            nav.index-nav a::after { display: none; }
+            nav.index-nav.show a { display: block; }
         }
     </style>
 </head>
 <body>
     
+    <!-- Loader Overlay -->
     <div id="proccesor">
         <div id="words">
             <div id="circle"></div>
@@ -487,12 +451,12 @@
         </div>
     </div>
 
-    <!-- Public Navigation Bar from index.html (Visible at all times) -->
-    <nav class="public-nav" id="mobile-menu">
-        <span class="menu-toggle-btn" onclick="Menu()">☰ </span>
+    <!-- INDEX NAVIGATION BAR (Fully visible before and after auth) -->
+    <nav id="mobile-menu" class="index-nav">
+        <a onclick="toggleMobileMenu()" class="menu-toggle">☰ Menu</a>
         <a href="index.html">Home</a>
         <a href="admissions.html">Admissions</a>
-        <a href="portals.html" class="active-link">Portals</a>
+        <a href="portals.html" style="color:#fde047;">Portals</a>
         <a href="constitution.html">Constitution</a>
         <a href="articles.html">Articles</a>
         <a href="events.html">Events</a>
@@ -500,27 +464,28 @@
         <a href="https://www.tiktok.com/@congresshighsch2" target="_blank">Visit Our TikTok Account</a>
     </nav>
 
-    <!-- Firewall Access Gate Screen (Before Credentials input) -->
-    <div id="auth-gate">
+    <!-- SECURE PORTAL ACCESS GATEWAY SCREEN -->
+    <div id="auth-gate-container">
         <div class="auth-card">
             <h2>CONGRESS HIGH SCHOOL</h2>
             <p>Motto: atya omusana</p>
             <div style="text-align: left; margin-bottom: 20px;">
                 <div class="form-group" style="margin-bottom: 12px;">
                     <label>Username</label>
-                    <input type="text" id="auth-user" value="james">
+                    <input type="text" id="auth-user" placeholder="Enter Username Manually" value="">
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="auth-pass" value="1234">
+                    <input type="password" id="auth-pass" placeholder="Enter Password Manually" value="">
                 </div>
             </div>
             <button class="btn" style="width: 100%;" onclick="verifySecureLogin()">Secure Portal Entrance</button>
         </div>
     </div>
 
-    <!-- Core App Dashboard View Frame Layout Structure (Revealed upon verified credential execution) -->
-    <div id="portal-app-layout">
+    <!-- MAIN PORTAL APPLICATION WORKSPACE -->
+    <div id="portal-workspace">
+        
         <div id="top">
             <div class="header-layout">
                 <div id="logo"><img src="badge.png" alt="CHS Corporate Badge" onerror="this.src='badge.png';"></div>
@@ -529,9 +494,7 @@
                     <span class="motto">"atya omusana"</span>
                 </div>
                 <div>
-                    <a href="javascript:void(0)" onclick="triggerSignout()" style="text-decoration: none; display: flex; align-items: center; gap: 8px;">
-                        <span style="color:white; font-weight:600; font-size: 0.9rem; background: rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 6px;">Logout</span>
-                    </a>
+                    <button onclick="triggerSignout()" class="btn btn-danger" style="padding: 8px 16px; font-size: 0.85rem;">Logout</button>
                 </div>
             </div>
 
@@ -539,390 +502,393 @@
                 Welcome <font id="profile-display-name">SSEMUWEMBA HENRY JAMES</font> , you logged in as <font id="profile-display-role">Data Manager</font>
             </div>
             
-            <div class="nav-container">
-                <button class="inner-menu-toggle" onclick="togglePortalMobileMenu()">☰ Toggle Menu Directory</button>
-                <nav id="top-nav-bar" class="portal-nav-bar">
-                    <a onclick="routeTo('dashboard')" id="nav-dashboard" class="active">Dashboard</a>
-                    <a onclick="routeTo('results')" id="nav-results">Results Hub</a>
-                    <a onclick="routeTo('teachers')" id="nav-teachers" class="admin-only">Teachers Registry</a>
-                    <a onclick="routeTo('students')" id="nav-students" class="admin-only">Students Matrix</a>
-                    <a onclick="routeTo('competencies')" id="nav-competencies">Subject Competencies</a>
-                    <a onclick="routeTo('employees')" id="nav-employees" class="admin-only">Employees & Payroll</a>
-                    <a onclick="routeTo('defaults')" id="nav-defaults" class="admin-only">System Defaults</a>
-                    <a onclick="routeTo('settings')" id="nav-settings" class="admin-only">Security Matrix Settings</a>
-                </nav>
-            </div>
+            <nav id="top-nav-bar" class="portal-nav">
+                <a onclick="routeTo('dashboard')" id="nav-dashboard" class="active">Dashboard</a>
+                <a onclick="routeTo('results')" id="nav-results">Results Hub</a>
+                <a onclick="routeTo('teachers')" id="nav-teachers" class="admin-only">Teachers Registry</a>
+                <a onclick="routeTo('students')" id="nav-students" class="admin-only">Students Matrix</a>
+                <a onclick="routeTo('competencies')" id="nav-competencies">Subject Competencies</a>
+                <a onclick="routeTo('employees')" id="nav-employees" class="admin-only">Employees & Payroll</a>
+                <a onclick="routeTo('defaults')" id="nav-defaults" class="admin-only">System Defaults</a>
+                <a onclick="routeTo('settings')" id="nav-settings" class="admin-only">Security Matrix Settings</a>
+            </nav>
         </div>
 
-        <div id="main">
-            <div class="workspace-grid">
+        <div class="workspace-grid">
+            
+            <div id="snavs">
+                <b id="sidebar-title">&#10064; Related Links</b>
+                <ul id="sidebar-links-bucket"></ul>
+            </div>
+
+            <div id="main-content">
                 
-                <div id="snavs">
-                    <b id="sidebar-title">&#10064; Related Links</b>
-                    <ul id="sidebar-links-bucket"></ul>
+                <!-- Dashboard Panel -->
+                <div id="panel-dashboard" class="portal-panel" style="display: block;">
+                    <h2>Welcome to the Congress High School System Management Console</h2>
+                    <p style="margin-bottom: 25px; color: var(--text-muted); line-height: 1.6; font-size: 0.95rem;">Use the responsive navigation nodes above to configure structural profiles, enter mark criteria indices, or allocate encryption keys dynamically.</p>
+                    
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:20px;">
+                        <div style="background: var(--bg-light); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); border-left: 4px solid var(--secondary);">
+                            <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Total Enrolled Students</h4>
+                            <span id="dash-count-stu" style="font-size:1.8rem; font-weight:700; color:var(--primary); display: block;">0</span>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">Candidates Profileled</span>
+                        </div>
+                        <div style="background: var(--bg-light); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); border-left: 4px solid var(--success);">
+                            <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Academic Staff Registry</h4>
+                            <span id="dash-count-tch" style="font-size:1.8rem; font-weight:700; color:var(--primary); display: block;">0</span>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">Instructors Active</span>
+                        </div>
+                        <div style="background: var(--bg-light); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Evaluation Entries Saved</h4>
+                            <span id="dash-count-mrk" style="font-size:1.8rem; font-weight:700; color:var(--primary); display: block;">0</span>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">Metrics Loop Logged</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="main-content">
-                    
-                    <div id="panel-dashboard" class="portal-panel" style="display: block;">
-                        <h2>Welcome to the Congress High School System Management Console</h2>
-                        <p style="margin-bottom: 25px; color: var(--text-muted); line-height: 1.6; font-size: 0.95rem;">Use the responsive navigation nodes above to configure structural profiles, enter mark criteria indices, or allocate encryption keys dynamically.</p>
-                        
-                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:20px;">
-                            <div style="background: var(--bg-light); padding: 20px; border-radius: 10px; border-left: 4px solid var(--secondary); border: 1px solid var(--border-color); border-left-width: 4px;">
-                                <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Total Enrolled Students</h4>
-                                <span id="dash-count-stu" style="font-size:1.8rem; font-weight:700; color:var(--primary); display: block; margin-bottom: 2px;">0</span>
-                                <span style="font-size: 0.85rem; color: var(--text-muted);">Candidates Profiled</span>
-                            </div>
-                            <div style="background: var(--bg-light); padding: 20px; border-radius: 10px; border-left: 4px solid var(--success); border: 1px solid var(--border-color); border-left-width: 4px;">
-                                <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Academic Staff Registry</h4>
-                                <span id="dash-count-tch" style="font-size:1.8rem; font-weight:700; color:var(--primary); display: block; margin-bottom: 2px;">0</span>
-                                <span style="font-size: 0.85rem; color: var(--text-muted);">Instructors Active</span>
-                            </div>
-                            <div style="background: var(--bg-light); padding: 20px; border-radius: 10px; border-left: 4px solid var(--accent); border: 1px solid var(--border-color); border-left-width: 4px;">
-                                <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Evaluation Entries Saved</h4>
-                                <span id="dash-count-mrk" style="font-size:1.8rem; font-weight:700; color:var(--primary); display: block; margin-bottom: 2px;">0</span>
-                                <span style="font-size: 0.85rem; color: var(--text-muted);">Metrics Loop Logged</span>
-                            </div>
+                <!-- Results Panel -->
+                <div id="panel-results" class="portal-panel">
+                    <div id="results-hub-home" style="text-align: center; margin-bottom: 25px; background: var(--bg-light); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color);">
+                        <h3 style="margin-bottom: 15px; color: var(--primary);">Academic Tier Evaluation Desks</h3>
+                        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                            <button class="btn" style="background: var(--success);" onclick="toggleResultsSubPanel('enter')">O Level Continuous Assessment Deck</button>
+                            <button class="btn" style="background: var(--secondary);" onclick="toggleResultsSubPanel('alevel')">A Level Advanced Evaluation Deck</button>
                         </div>
                     </div>
 
-                    <div id="panel-results" class="portal-panel">
-                        <div id="results-hub-home" style="text-align: center; margin-bottom: 25px; background: var(--bg-light); padding: 25px; border-radius: 10px; border: 1px solid var(--border-color);">
-                            <h3 style="margin-bottom: 15px; color: var(--primary);">Academic Tier Evaluation Desks</h3>
-                            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                                <button class="btn" style="background: var(--success);" onclick="toggleResultsSubPanel('enter')">O Level Continuous Assessment Deck</button>
-                                <button class="btn" style="background: var(--secondary);" onclick="toggleResultsSubPanel('alevel')">A Level Advanced Evaluation Deck</button>
-                            </div>
-                        </div>
-
-                        <div id="results-olevel-form" style="display: none;">
-                            <fieldset>
-                                <legend>Continuous Assessment Evaluation Entry (O Level Matrix)</legend>
-                                <form id="cbcMarksForm" onsubmit="saveNewEvaluationMarkRecord(event)">
-                                    <div class="form-row">
-                                        <div class="form-group">
-                                            <label>Academic Year</label>
-                                            <select id="res-year" required><option value="2026">2026</option><option value="2025">2025</option></select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Academic Term</label>
-                                            <select id="res-term" required><option>Term 1</option><option>Term 2</option><option>Term 3</option></select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Class Assignment Level</label>
-                                            <select id="res-class" required><option>S.1</option><option>S.2</option><option>S.3</option><option>S.4</option></select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Stream Node Combination</label>
-                                            <select id="res-stream"><option value="Stream Q">Stream Q</option><option value="Stream K">Stream K</option><option value="Stream A">Stream A</option><option value="Stream B">Stream B</option></select>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group" style="min-width: 260px;">
-                                            <label>Target Student Full Legal Name / Identifier</label>
-                                            <input type="text" id="res-student-identifier" placeholder="Enter full candidate title label" required>
-                                        </div>
-                                        <div class="form-group" style="min-width: 220px;">
-                                            <label>Ugandan NLSC Curriculum Subject Axis</label>
-                                            <select id="res-subject" required>
-                                                <option>English</option><option>Mathematics</option><option>Biology</option>
-                                                <option>Chemistry</option><option>Physics</option><option>Geography</option>
-                                                <option>History & Political Education</option><option>Religious Education (CRE/IRE)</option>
-                                                <option>Kiswahili</option><option>Luganda</option><option>Art & Design</option>
-                                                <option>Physical Education</option><option>Information Communication Technology</option>
-                                                <option>Agriculture</option><option>Literature In English</option><option>Entrepreneurship</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Competency Evaluation Score Descriptor (0.0 - 3.0)</label>
-                                            <input type="number" id="res-score" min="0" max="3" step="0.1" placeholder="Enter points parameter score" required>
-                                        </div>
-                                    </div>
-                                    <div style="text-align: right; margin-top: 10px;">
-                                        <button type="submit" class="btn" style="background: var(--success);">Synchronize Assessment Record</button>
-                                    </div>
-                                </form>
-                            </fieldset>
-                        </div>
-
-                        <div id="results-alevel-form" style="display: none;">
-                            <fieldset>
-                                <legend>Advanced National Evaluation Entry Pipeline (A Level Matrix)</legend>
-                                <form id="alevelMarksForm" onsubmit="saveAlevelEvaluationRecord(event)">
-                                    <div class="form-row">
-                                        <div class="form-group">
-                                            <label>Academic Year</label>
-                                            <select id="al-year"><option value="2026">2026</option></select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Term Assignment</label>
-                                            <select id="al-term"><option>Term 1</option><option>Term 2</option><option>Term 3</option></select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Class Level</label>
-                                            <select id="al-class"><option>S.5</option><option>S.6</option></select>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group">
-                                            <label>Subject Component Combo Line</label>
-                                            <input type="text" id="al-subject" placeholder="e.g. Physics, Math, Fine Art" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Student Identifier Token</label>
-                                            <input type="text" id="al-student" placeholder="Candidate Identifier Name" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Raw Weighted score % (0-100)</label>
-                                            <input type="number" id="al-score" min="0" max="100" placeholder="%" required>
-                                        </div>
-                                    </div>
-                                    <div style="text-align: right; margin-top: 10px;">
-                                        <button type="submit" class="btn" style="background: var(--secondary);">Commit Advanced Score</button>
-                                    </div>
-                                </form>
-                            </fieldset>
-                        </div>
-
-                        <div id="results-marksheets-form" style="display: none;">
-                            <fieldset>
-                                <legend>Generate Structured Mark Sheets Matrix Summary</legend>
+                    <div id="results-olevel-form" style="display: none;">
+                        <fieldset>
+                            <legend>Continuous Assessment Evaluation Entry (O Level Matrix)</legend>
+                            <form id="cbcMarksForm" onsubmit="saveNewEvaluationMarkRecord(event)">
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label>Subject Focus</label>
-                                        <select id="sheet-filter-subject">
-                                            <option>English</option><option>Mathematics</option><option>Biology</option><option>Chemistry</option><option>Physics</option>
-                                            <option>Geography</option><option>History & Political Education</option><option>Religious Education (CRE/IRE)</option>
+                                        <label>Academic Year</label>
+                                        <select id="res-year" required><option value="2026">2026</option><option value="2025">2025</option></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Academic Term</label>
+                                        <select id="res-term" required><option>Term 1</option><option>Term 2</option><option>Term 3</option></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Class Assignment Level</label>
+                                        <select id="res-class" required><option>S.1</option><option>S.2</option><option>S.3</option><option>S.4</option></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Stream Node Combination</label>
+                                        <select id="res-stream"><option value="Stream Q">Stream Q</option><option value="Stream K">Stream K</option><option value="Stream A">Stream A</option><option value="Stream B">Stream B</option></select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group" style="min-width: 260px;">
+                                        <label>Target Student Full Legal Name</label>
+                                        <input type="text" id="res-student-identifier" placeholder="Enter full candidate title label" required>
+                                    </div>
+                                    <div class="form-group" style="min-width: 220px;">
+                                        <label>Ugandan NLSC Curriculum Subject Axis</label>
+                                        <select id="res-subject" required>
+                                            <option>English</option><option>Mathematics</option><option>Biology</option>
+                                            <option>Chemistry</option><option>Physics</option><option>Geography</option>
+                                            <option>History & Political Education</option><option>Religious Education (CRE/IRE)</option>
+                                            <option>Kiswahili</option><option>Luganda</option><option>Art & Design</option>
+                                            <option>Physical Education</option><option>Information Communication Technology</option>
+                                            <option>Agriculture</option><option>Literature In English</option><option>Entrepreneurship</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label>Assessment Set Window</label>
-                                        <select id="sheet-filter-set"><option>BOT (Beginning of Term)</option><option>MOT (Middle of Term)</option><option>EOT (End of Term)</option></select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Year</label>
-                                        <select id="sheet-filter-year"><option>2026</option><option>2025</option></select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Term</label>
-                                        <select id="sheet-filter-term"><option>Term 1</option><option>Term 2</option><option>Term 3</option></select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Class Group</label>
-                                        <select id="sheet-filter-class"><option>S.1</option><option>S.2</option><option>S.3</option><option>S.4</option></select>
+                                        <label>Competency Evaluation Score (0.0 - 3.0)</label>
+                                        <input type="number" id="res-score" min="0" max="3" step="0.1" placeholder="Enter score" required>
                                     </div>
                                 </div>
                                 <div style="text-align: right; margin-top: 10px;">
-                                    <button class="btn" onclick="executeReportGenerationPipeline('marksheet indices matrix')">Generate Sheets</button>
-                                </div>
-                            </fieldset>
-                        </div>
-
-                        <div id="results-report-render-box" style="margin-top:25px;">
-                            <h3 style="border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px;">Active Academic Evaluation Ledger Logs</h3>
-                            <div class="table-responsive">
-                                <table class="data-table">
-                                    <thead>
-                                        <tr><th>Student Identity Label</th><th>Curriculum Subject Axis</th><th>Class Node</th><th>Points Parameter Metrics</th><th>Action Link Control</th></tr>
-                                    </thead>
-                                    <tbody id="evaluation-marks-tbody">
-                                        <tr><td colspan="5" style="text-align:center; color: var(--text-muted); padding:20px;">Synchronizing with Supabase memory matrix...</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="panel-teachers" class="portal-panel">
-                        <fieldset>
-                            <legend>Register Academic Instructor Profile File</legend>
-                            <form id="addTeacherProfileForm" onsubmit="saveNewTeacherRecord(event)">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label>Employee Registration No ID</label>
-                                        <input type="text" id="tch-id" placeholder="e.g. S26085" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Full Instructor Legal Name</label>
-                                        <input type="text" id="tch-name" placeholder="Surname & Rest of Name" required>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label>Responsibility Desk Designation</label>
-                                        <input type="text" id="tch-role" placeholder="e.g. Teacher, Department Head" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Contact Electronic Mail Link Address</label>
-                                        <input type="email" id="tch-email" placeholder="instructor@domain.com" required>
-                                    </div>
-                                </div>
-                                <div style="text-align: right; margin-top: 10px;">
-                                    <button type="submit" class="btn">Register Profile Mapping</button>
+                                    <button type="submit" class="btn" style="background: var(--success);">Synchronize Assessment Record</button>
                                 </div>
                             </form>
                         </fieldset>
+                    </div>
 
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin: 25px 0 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; flex-wrap: wrap; gap: 10px;">
-                            <h3>Primary Academic Staff Registry Dashboard</h3>
-                            <span style="font-size: 0.9rem; font-weight: 500; color: var(--text-muted);">Total: <strong style="color: var(--maroon);" id="teacher-count-label">0</strong> Active Records Listed</span>
-                        </div>
-                        
+                    <div id="results-alevel-form" style="display: none;">
+                        <fieldset>
+                            <legend>Advanced National Evaluation Entry Pipeline (A Level Matrix)</legend>
+                            <form id="alevelMarksForm" onsubmit="saveAlevelEvaluationRecord(event)">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Academic Year</label>
+                                        <select id="al-year"><option value="2026">2026</option></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Term Assignment</label>
+                                        <select id="al-term"><option>Term 1</option><option>Term 2</option><option>Term 3</option></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Class Level</label>
+                                        <select id="al-class"><option>S.5</option><option>S.6</option></select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Subject Component Combo Line</label>
+                                        <input type="text" id="al-subject" placeholder="e.g. Physics, Math, Fine Art" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Student Identifier Token</label>
+                                        <input type="text" id="al-student" placeholder="Candidate Identifier Name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Raw Weighted score % (0-100)</label>
+                                        <input type="number" id="al-score" min="0" max="100" placeholder="%" required>
+                                    </div>
+                                </div>
+                                <div style="text-align: right; margin-top: 10px;">
+                                    <button type="submit" class="btn" style="background: var(--secondary);">Commit Advanced Score</button>
+                                </div>
+                            </form>
+                        </fieldset>
+                    </div>
+
+                    <div id="results-marksheets-form" style="display: none;">
+                        <fieldset>
+                            <legend>Generate Structured Mark Sheets Matrix Summary</legend>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Subject Focus</label>
+                                    <select id="sheet-filter-subject">
+                                        <option>English</option><option>Mathematics</option><option>Biology</option><option>Chemistry</option><option>Physics</option>
+                                        <option>Geography</option><option>History & Political Education</option><option>Religious Education (CRE/IRE)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Assessment Set Window</label>
+                                    <select id="sheet-filter-set"><option>BOT (Beginning of Term)</option><option>MOT (Middle of Term)</option><option>EOT (End of Term)</option></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Year</label>
+                                    <select id="sheet-filter-year"><option>2026</option><option>2025</option></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Term</label>
+                                    <select id="sheet-filter-term"><option>Term 1</option><option>Term 2</option><option>Term 3</option></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Class Group</label>
+                                    <select id="sheet-filter-class"><option>S.1</option><option>S.2</option><option>S.3</option><option>S.4</option></select>
+                                </div>
+                            </div>
+                            <div style="text-align: right; margin-top: 10px;">
+                                <button class="btn" onclick="executeReportGenerationPipeline('marksheet indices matrix')">Generate Sheets</button>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div id="results-report-render-box" style="margin-top:25px;">
+                        <h3 style="border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px;">Active Academic Evaluation Ledger Logs</h3>
                         <div class="table-responsive">
                             <table class="data-table">
                                 <thead>
-                                    <tr><th>Index</th><th>EMPLOYEE NO ID</th><th>INSTRUCTOR FULL LEGAL NAME</th><th>RESPONSIBILITY FIELD</th><th>EMAIL LINK DESK</th><th>ACTION CONTROLS</th></tr>
+                                    <tr><th>Student Identity Label</th><th>Curriculum Subject Axis</th><th>Class Node</th><th>Points Parameter Metrics</th><th>Action Link Control</th></tr>
                                 </thead>
-                                <tbody id="teachers-registry-tbody">
-                                    <tr><td colspan="6" style="text-align:center; color: var(--text-muted); padding:20px;">Synchronizing with Supabase memory matrix...</td></tr>
+                                <tbody id="evaluation-marks-tbody">
+                                    <tr><td colspan="5" style="text-align:center; color: var(--text-muted); padding:20px;">Synchronizing with Supabase memory matrix...</td></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
+                </div>
 
-                    <div id="panel-students" class="portal-panel">
+                <!-- Teachers Registry Panel -->
+                <div id="panel-teachers" class="portal-panel">
+                    <fieldset>
+                        <legend>Register Academic Instructor Profile File</legend>
+                        <form id="addTeacherProfileForm" onsubmit="saveNewTeacherRecord(event)">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Employee Registration No ID</label>
+                                    <input type="text" id="tch-id" placeholder="e.g. S26085" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Full Instructor Legal Name</label>
+                                    <input type="text" id="tch-name" placeholder="Surname & Rest of Name" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Responsibility Desk Designation</label>
+                                    <input type="text" id="tch-role" placeholder="e.g. Teacher, Department Head" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Electronic Mail Address</label>
+                                    <input type="email" id="tch-email" placeholder="instructor@domain.com" required>
+                                </div>
+                            </div>
+                            <div style="text-align: right; margin-top: 10px;">
+                                <button type="submit" class="btn">Register Profile Mapping</button>
+                            </div>
+                        </form>
+                    </fieldset>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin: 25px 0 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; flex-wrap: wrap; gap: 10px;">
+                        <h3>Primary Academic Staff Registry Dashboard</h3>
+                        <span style="font-size: 0.9rem; font-weight: 500; color: var(--text-muted);">Total: <strong style="color: var(--maroon);" id="teacher-count-label">0</strong> Active Records Listed</span>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>Index</th><th>EMPLOYEE NO ID</th><th>INSTRUCTOR FULL LEGAL NAME</th><th>RESPONSIBILITY FIELD</th><th>EMAIL LINK DESK</th><th>ACTION CONTROLS</th></tr>
+                            </thead>
+                            <tbody id="teachers-registry-tbody">
+                                <tr><td colspan="6" style="text-align:center; color: var(--text-muted); padding:20px;">Synchronizing with Supabase memory matrix...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Students Matrix Panel -->
+                <div id="panel-students" class="portal-panel">
+                    <fieldset>
+                        <legend>Student Admission Intake Entry</legend>
+                        <form id="addStudentProfileForm" onsubmit="saveNewStudentAdmissionProfile(event)">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Admission Tracking Number ID</label>
+                                    <input type="text" id="stu-id" placeholder="e.g. CHS/26/0912" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Full Student Legal Name</label>
+                                    <input type="text" id="stu-name" placeholder="Surname & Alternative Labels" required>
+                                </div>
+                                <div class="form-group" style="min-width: 100px; flex: 0.5;">
+                                    <label>Biological Sex</label>
+                                    <select id="stu-sex"><option>M</option><option>F</option></select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Class Assignment Tier</label>
+                                    <select id="stu-class"><option>S.1</option><option>S.2</option><option>S.3</option><option>S.4</option><option>S.5</option><option>S.6</option></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Section System Stream Combination</label>
+                                    <input type="text" id="stu-stream" placeholder="e.g. Q / K / Day / Hostel" required>
+                                </div>
+                            </div>
+                            <div style="text-align: right; margin-top: 10px;">
+                                <button type="submit" class="btn" style="background:var(--maroon);">Commit Admission File</button>
+                            </div>
+                        </form>
+                    </fieldset>
+
+                    <div style="display: flex; justify-content: space-between; margin: 25px 0 15px; align-items: center; flex-wrap: wrap; gap:15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                        <input type='text' id="student-search-input" placeholder='Search student registry indices dynamically...' style='max-width:360px; border:1px solid #cbd5e1; padding:10px 14px; border-radius:8px;' onkeyup="executeClientSideStudentSearch()">
+                        <span style="font-size: 0.9rem; font-weight: 500; color: var(--text-muted);">Total Database Context Count: <strong style="color: var(--maroon);" id="student-count-label">0</strong> Candidates Populated</span>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>Index</th><th>STUDENT ADMISSION NO</th><th>FULL REGISTERED LEGAL NAME</th><th>SEX</th><th>CLASS FOCUS</th><th>STREAM SNAPSHOT</th><th>STATUS MODULE</th><th>CONTROLS ACTION Matrix</th></tr>
+                            </thead>
+                            <tbody id="students-registry-tbody">
+                                <tr><td colspan="8" style="text-align:center; color: var(--text-muted); padding:20px;">Synchronizing with Supabase memory matrix...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Security Matrix Settings Panel -->
+                <div id="panel-settings" class="portal-panel">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px;">
                         <fieldset>
-                            <legend>Student Intake Entry Admission Intake Entry</legend>
-                            <form id="addStudentProfileForm" onsubmit="saveNewStudentAdmissionProfile(event)">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label>Admission Tracking Number ID</label>
-                                        <input type="text" id="stu-id" placeholder="e.g. CHS/26/0912" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Full Student Legal Name</label>
-                                        <input type="text" id="stu-name" placeholder="Surname & Alternative Labels" required>
-                                    </div>
-                                    <div class="form-group" style="min-width: 100px; flex: 0.5;">
-                                        <label>Biological Sex</label>
-                                        <select id="stu-sex"><option>M</option><option>F</option></select>
-                                    </div>
+                            <legend>Change Global Master Administrator Credentials</legend>
+                            <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:15px;">
+                                <div class="form-group">
+                                    <label>Secure Username Reference</label>
+                                    <input type="text" id="cfg-username" value="james">
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label>Class Assignment Tier</label>
-                                        <select id="stu-class"><option>S.1</option><option>S.2</option><option>S.3</option><option>S.4</option><option>S.5</option><option>S.6</option></select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Section System Stream Combination</label>
-                                        <input type="text" id="stu-stream" placeholder="e.g. Q / K / Day / Hostel" required>
-                                    </div>
+                                <div class="form-group">
+                                    <label>Secret Key Token/Password</label>
+                                    <input type="password" id="cfg-password" value="1234">
                                 </div>
-                                <div style="text-align: right; margin-top: 10px;">
-                                    <button type="submit" class="btn" style="background:var(--maroon);">Commit Admission File</button>
-                                </div>
-                            </form>
+                            </div>
+                            <button class="btn" style="background: var(--success); width: 100%;" onclick="executeCredentialUpdate()">Update Master Key Firewall</button>
                         </fieldset>
 
-                        <div style="display: flex; justify-content: space-between; margin: 25px 0 15px; align-items: center; flex-wrap: wrap; gap:15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
-                            <input type='text' id="student-search-input" placeholder='Search student registry indices dynamically...' style='max-width:360px; border:1px solid #cbd5e1; padding:10px 14px; border-radius:8px;' onkeyup="executeClientSideStudentSearch()">
-                            <span style="font-size: 0.9rem; font-weight: 500; color: var(--text-muted);">Total Database Context Count: <strong style="color: var(--maroon);" id="student-count-label1">0</strong> Candidates Populated</span>
-                        </div>
-                        
+                        <fieldset>
+                            <legend>Account Framework Snapshot Properties</legend>
+                            <p style="font-size:0.9rem; color: var(--text-muted); line-height:1.6;">Configure multi-layered access provisions for external credential tokens mapping views for subject teachers, parent groups, and students.</p>
+                        </fieldset>
+                    </div>
+
+                    <fieldset style="margin-top:25px;">
+                        <legend>MIS Role Access Provisioning Engine Module</legend>
+                        <p style="font-size:0.88rem; margin-bottom:20px; color: var(--text-muted);">Allocate custom credential tokens securely permitting designated stakeholders to view academic tracking records layers.</p>
+                        <form id="provisionRoleAccessForm" onsubmit="processNewAccessAllocation(event)">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Target Entity Role Profile</label>
+                                    <select id="prov-role">
+                                        <option value="Teacher">Academic Instructor / Teacher</option>
+                                        <option value="Parent">Parent / Guardian Reference</option>
+                                        <option value="Student">Enrolled Student</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Target Record Owner Identifier Label</label>
+                                    <input type="text" id="prov-label" placeholder="e.g. Staff Evaluator / Parent Reference" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Assigned Unique System Username</label>
+                                    <input type="text" id="prov-user" placeholder="Create unique user ID String" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Secure Access Password Token</label>
+                                    <input type="password" id="prov-pass" placeholder="Create secret token" required>
+                                </div>
+                            </div>
+                            <div style="text-align: right; margin-top: 10px;">
+                                <button type="submit" class="btn" style="background:var(--secondary);">Provision Gate Permissions</button>
+                            </div>
+                        </form>
+
+                        <h4 style="margin-top:30px; font-size:1rem; color:var(--primary); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px;">Active Provisioned Portals Multi-Layer Key Registry</h4>
                         <div class="table-responsive">
                             <table class="data-table">
                                 <thead>
-                                    <tr><th>Index</th><th>STUDENT ADMISSION NO</th><th>FULL REGISTERED LEGAL NAME</th><th>SEX</th><th>CLASS FOCUS</th><th>STREAM SNAPSHOT</th><th>STATUS MODULE</th><th>CONTROLS ACTION Matrix</th></tr>
+                                    <tr><th>Assignment Classification Matrix</th><th>Designated Owner Profile Target</th><th>Username Identity Label</th><th>Security Authentication Layer</th><th>Action Management Module</th></tr>
                                 </thead>
-                                <tbody id="students-registry-tbody">
-                                    <tr><td colspan="8" style="text-align:center; color: var(--text-muted); padding:20px;">Synchronizing with Supabase memory matrix...</td></tr>
+                                <tbody id="access-matrix-tbody">
+                                    <tr><td colspan="5" style="text-align:center; color: var(--text-muted); padding:20px;">Synchronizing with Supabase memory matrix...</td></tr>
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-
-                    <div id="panel-settings" class="portal-panel">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px;">
-                            <fieldset>
-                                <legend>Change Global Master Administrator Credentials</legend>
-                                <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:15px;">
-                                    <div class="form-group">
-                                        <label>Secure Username Reference</label>
-                                        <input type="text" id="cfg-username" value="james">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Secret Key Token/Password</label>
-                                        <input type="password" id="cfg-password" value="1234">
-                                    </div>
-                                </div>
-                                <button class="btn" style="background: var(--success); width: 100%;" onclick="executeCredentialUpdate()">Update Master Key Firewall</button>
-                            </fieldset>
-
-                            <fieldset>
-                                <legend>Account Framework Snapshot Properties</legend>
-                                <p style="font-size:0.9rem; color: var(--text-muted); line-height:1.6;">Configure multi-layered access provisions for external credential tokens mapping views for subject teachers, parent groups, and students.</p>
-                            </fieldset>
-                        </div>
-
-                        <fieldset style="margin-top:25px;">
-                            <legend>MIS Role Access Provisioning Engine Module</legend>
-                            <p style="font-size:0.88rem; margin-bottom:20px; color: var(--text-muted);">Allocate custom credential tokens securely permitting designated stakeholders to view academic tracking records layers.</p>
-                            <form id="provisionRoleAccessForm" onsubmit="processNewAccessAllocation(event)">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label>Target Entity Role Profile</label>
-                                        <select id="prov-role">
-                                            <option value="Teacher">Academic Instructor / Teacher</option>
-                                            <option value="Parent">Parent / Guardian Reference</option>
-                                            <option value="Student">Enrolled Student</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Target Record Owner Identifier Label</label>
-                                        <input type="text" id="prov-label" placeholder="e.g. Staff Evaluator / Parent Reference" required>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label>Assigned Unique System Username</label>
-                                        <input type="text" id="prov-user" placeholder="Create unique user ID String" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Secure Access Password Token</label>
-                                        <input type="password" id="prov-pass" placeholder="Create secret token" required>
-                                    </div>
-                                </div>
-                                <div style="text-align: right; margin-top: 10px;">
-                                    <button type="submit" class="btn" style="background:var(--secondary);">Provision Gate Permissions</button>
-                                </div>
-                            </form>
-
-                            <h4 style="margin-top:30px; font-size:1rem; color:var(--primary); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px;">Active Provisioned Portals Multi-Layer Key Registry</h4>
-                            <div class="table-responsive">
-                                <table class="data-table">
-                                    <thead>
-                                        <tr><th>Assignment Classification Matrix</th><th>Designated Owner Profile Target</th><th>Username Identity Label</th><th>Security Authentication Layer</th><th>Action Management Module</th></tr>
-                                    </thead>
-                                    <tbody id="access-matrix-tbody">
-                                        <tr><td colspan="5" style="text-align:center; color: var(--text-muted); padding:20px;">Synchronizing with Supabase memory matrix...</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </fieldset>
-                    </div>
-
-                    <div id="panel-competencies" class="portal-panel">
-                        <h2>Ugandan New Lower Secondary Curriculum (NLSC) Competencies Tracker Matrix Node</h2>
-                        <p style="color: var(--text-muted); line-height: 1.6; font-size: 0.95rem;">The integrated Continuous Assessment Matrix Tracking pipeline is operational. Use the <strong>Results Hub Node</strong> up above to query, update or log continuous point descriptors dynamically into the system storage arrays.</p>
-                    </div>
-                    
-                    <div id="panel-employees" class="portal-panel">
-                        <h2>Central Employee Management Directory & Instructional Payroll Hub</h2>
-                        <p style="color: var(--text-muted); line-height: 1.6; font-size: 0.95rem;">Central infrastructure parameters tracking system enabled. Manage combinations, desk designations, structural parameters, and instructional files using the central <strong>Teachers Registry</strong> configuration loop panel.</p>
-                    </div>
-                    
-                    <div id="panel-defaults" class="portal-panel">
-                        <h2>System Environment Global Variables Default Workspace Matrix</h2>
-                        <p style="color: var(--text-muted); font-size: 0.95rem;">Dynamic global properties environment setup configurations mapped and operating within optimal parameter definitions.</p>
-                    </div>
-
+                    </fieldset>
                 </div>
+
+                <!-- Competencies Panel -->
+                <div id="panel-competencies" class="portal-panel">
+                    <h2>Ugandan New Lower Secondary Curriculum (NLSC) Competencies Tracker Matrix Node</h2>
+                    <p style="color: var(--text-muted); line-height: 1.6; font-size: 0.95rem;">The integrated Continuous Assessment Matrix Tracking pipeline is operational. Use the <strong>Results Hub Node</strong> up above to query, update or log continuous point descriptors dynamically into the system storage arrays.</p>
+                </div>
+                
+                <!-- Employees Panel -->
+                <div id="panel-employees" class="portal-panel">
+                    <h2>Central Employee Management Directory & Instructional Payroll Hub</h2>
+                    <p style="color: var(--text-muted); line-height: 1.6; font-size: 0.95rem;">Central infrastructure parameters tracking system enabled. Manage combinations, desk designations, structural parameters, and instructional files using the central <strong>Teachers Registry</strong> configuration loop panel.</p>
+                </div>
+                
+                <!-- Defaults Panel -->
+                <div id="panel-defaults" class="portal-panel">
+                    <h2>System Environment Global Variables Default Workspace Matrix</h2>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Dynamic global properties environment setup configurations mapped and operating within optimal parameter definitions.</p>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <!-- Integrated Footer from index.html -->
+    <!-- INDEX FOOTER -->
     <footer>
         <h2>Congress High School</h2>
         <p>
@@ -955,30 +921,29 @@
         let gateKeeperPass = "1234";
         let currentUserRole = "Data Manager";
 
-        function togglePublicMobileMenu() {
-            document.getElementById('mobile-menu').classList.toggle('mobile-expanded');
-        }
-
-        function togglePortalMobileMenu() {
-            document.getElementById('top-nav-bar').classList.toggle('show');
-        }
-
         async function verifySecureLogin() {
             const u = document.getElementById('auth-user').value.trim();
             const p = document.getElementById('auth-pass').value.trim();
 
+            if (!u || !p) {
+                alert("Please enter both Username and Password.");
+                return;
+            }
+
             runProcessorAnimation(600);
 
+            // Check primary system configuration credentials
             if (u === gateKeeperUser && p === gateKeeperPass) {
                 currentUserRole = "Data Manager";
                 applyRolePermissionsUI();
-                document.getElementById('auth-gate').style.display = 'none';
-                document.getElementById('portal-app-layout').style.display = 'flex';
+                document.getElementById('auth-gate-container').style.display = 'none';
+                document.getElementById('portal-workspace').style.display = 'block';
                 await initializeApplicationDataStructures();
                 routeTo('dashboard');
                 return;
             }
 
+            // Query explicit multi-layer keys registry dynamically from Supabase
             try {
                 const { data, error } = await supabaseClient
                     .from('access_allocations')
@@ -993,8 +958,8 @@
                     document.getElementById('profile-display-role').innerText = currentUserRole;
                     
                     applyRolePermissionsUI();
-                    document.getElementById('auth-gate').style.display = 'none';
-                    document.getElementById('portal-app-layout').style.display = 'flex';
+                    document.getElementById('auth-gate-container').style.display = 'none';
+                    document.getElementById('portal-workspace').style.display = 'block';
                     await initializeApplicationDataStructures();
                     
                     if (currentUserRole === 'Teacher') {
@@ -1003,10 +968,10 @@
                         routeTo('dashboard');
                     }
                 } else {
-                    alert("Security Authorization Failed: Invalid Username or Password Credentials mapping.");
+                    alert("Security Authorization Failed: Invalid Username or Password Credentials.");
                 }
             } catch (err) {
-                alert("Security Gateway Lookup Error: Check cloud link states.");
+                alert("Security Gateway Lookup Error: Check cloud database connection status.");
             }
         }
 
@@ -1022,8 +987,9 @@
 
         function triggerSignout() {
             runProcessorAnimation(400);
-            document.getElementById('portal-app-layout').style.display = 'none';
-            document.getElementById('auth-gate').style.display = 'flex';
+            document.getElementById('portal-workspace').style.display = 'none';
+            document.getElementById('auth-gate-container').style.display = 'flex';
+            document.getElementById('auth-user').value = '';
             document.getElementById('auth-pass').value = '';
         }
 
@@ -1036,7 +1002,7 @@
                 runProcessorAnimation(600);
                 alert("Master Administrative Credentials Matrix Updated Successfully!");
             } else {
-                alert("Invalid inputs validation failed.");
+                alert("Invalid inputs. Validation failed.");
             }
         }
 
@@ -1044,6 +1010,10 @@
             const proc = document.getElementById('proccesor');
             proc.style.display = 'flex';
             setTimeout(() => { proc.style.display = 'none'; }, duration);
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('show');
         }
 
         function routeTo(panelId) {
@@ -1060,7 +1030,6 @@
             const targetedNavLink = document.getElementById('nav-' + panelId);
             if(targetedNavLink) targetedNavLink.classList.add('active');
             
-            document.getElementById('top-nav-bar').classList.remove('show');
             generateDynamicSidebarDirectories(panelId);
         }
 
@@ -1119,6 +1088,10 @@
             }
         }
 
+        // ==========================================
+        //  SUPABASE PIPELINE SYNCHRONIZATION ENGINES
+        // ==========================================
+        
         async function initializeApplicationDataStructures() {
             try {
                 await syncDashboardCounters();
@@ -1218,6 +1191,7 @@
             }
         }
 
+        // --- TEACHERS PIPELINE ---
         async function loadLiveTeachers() {
             const { data, error } = await supabaseClient.from('teachers').select('*').order('created_at', { ascending: true });
             if (error) return console.error(error);
@@ -1283,6 +1257,7 @@ Password: chs1234`);
             }
         }
 
+        // --- STUDENTS PIPELINE ---
         async function loadLiveStudents() {
             const { data, error } = await supabaseClient.from('students').select('*').order('created_at', { ascending: true });
             if (error) return console.error(error);
@@ -1305,7 +1280,7 @@ Password: chs1234`);
                             <td><a href="javascript:void(0)" class="badge-red" onclick="disableStudentRowItem('${stu.id}')">Disable Profile</a></td>
                         </tr>`;
                 });
-                document.getElementById('student-count-label1').innerText = data.length;
+                document.getElementById('student-count-label').innerText = data.length;
             }
         }
 
@@ -1344,6 +1319,7 @@ Password: chs1234`);
             });
         }
 
+        // --- ACCESS GATE PIPELINE ---
         async function loadLiveAccessMatrix() {
             const { data, error } = await supabaseClient.from('access_allocations').select('*').order('created_at', { ascending: true });
             if (error) return console.error(error);
